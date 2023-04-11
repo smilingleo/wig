@@ -1,0 +1,28 @@
+---
+name: Boolean section
+description: |
+  Condition check on boolean field.
+template: |
+  {{#Invoice.Account.AutoPay}}
+    {{Invoice.Account.DefaultPaymentMethod.CreditCardMaskNumber}}
+  {{/Invoice.Account.AutoPay}}
+  {{#Invoice.Account}}
+  {{#AutoPay}}
+    {{DefaultPaymentMethod.CreditCardMaskNumber}}
+  {{/AutoPay}}
+  {{/Invoice.Account}}
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "AutoPay": true,
+          "DefaultPaymentMethod": {
+            "CreditCardMaskNumber": "******9999"
+          }
+        },
+        "Id": "testId"
+      }
+  }
+expectedRendered: |
+  ******9999
+  ******9999

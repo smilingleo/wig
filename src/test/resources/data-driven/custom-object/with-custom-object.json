@@ -1,0 +1,36 @@
+{
+  "Invoice": {
+    "InvoiceNumber": "INV00000029",
+    "Balance": 193.45
+  },
+  "default__billingdocuments": [
+    {
+      "BillingDocumentNumber__c": "B-000006",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-18T05:18:31.960Z",
+      "CustomerName__c": "Joe"
+    },
+    {
+      "BillingDocumentNumber__c": "B-000007",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-11T01:49:21.127Z",
+      "CustomerName__c": "Joe"
+    },
+    {
+      "BillingDocumentNumber__c": "B-000011",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-09T02:11:33.622Z",
+      "CustomerName__c": "Joe"
+    },
+    {
+      "BillingDocumentNumber__c": "B-000007",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-08T00:05:31.985Z",
+      "CustomerName__c": "Joe"
+    }
+  ]
+}

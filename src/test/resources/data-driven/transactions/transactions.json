@@ -1,0 +1,54 @@
+{
+  "Invoice": {
+    "PaymentParts": [
+      {
+        "Payment": {
+          "Status": "Processed",
+          "Comment": "",
+          "Type": "Electronic",
+          "PaymentMethodSnapshot": {
+            "BankTransferAccountNumberMask": null,
+            "Type": "CreditCard",
+            "CreditCardMaskNumber": "************1111",
+            "AchAccountNumberMask": null,
+            "Id": "2c92c8fb79d2de080179d5fdc6f26009"
+          },
+          "PaymentMethod": {
+            "Type": "CreditCard",
+            "Id": "2c92c8fe79652c000179683d2c381230"
+          },
+          "Id": "2c92c8fb79d2de080179d5fdc6f2600a",
+          "PaymentNumber": "P-00000021",
+          "EffectiveDate": "2021-06-04"
+        },
+        "Amount": 100,
+        "Id": "2c92c8fb79d2de080179d5fdc6f2600b"
+      }
+    ],
+    "CreditMemoParts": [
+      {
+        "Amount": 33.45,
+        "CreditMemo": {
+          "Status": "Posted",
+          "MemoDate": "2021-06-01",
+          "Comments": "",
+          "Id": "2c92c8fb7a1479f6017a17a0841f3640",
+          "MemoNumber": "CM00000004"
+        },
+        "Id": "2c92c8fb7a1479f6017a17a084c2366d"
+      },
+      {
+        "Amount": 60,
+        "CreditMemo": {
+          "Status": "Posted",
+          "MemoDate": "2021-06-04",
+          "Comments": "",
+          "Id": "2c92c8fb79d2de020179d5ff69d403d0",
+          "MemoNumber": "CM00000003"
+        },
+        "Id": "2c92c8fb79d2de080179d5ff88356046"
+      }
+    ],
+    "Id": "2c92c8fc79652bd2017968434cc92c3d"
+  }
+}

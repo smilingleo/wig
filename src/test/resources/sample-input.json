@@ -1,0 +1,300 @@
+{
+  "Invoice": {
+    "InvoiceItems": [
+      {
+        "ServiceStartDate": "2020-12-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434cea2c52",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-12-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434cea2c51",
+        "ChargeAmount": -1.35
+      },
+      {
+        "ServiceStartDate": "2020-12-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434cea2c50",
+        "ChargeAmount": 27
+      },
+      {
+        "ServiceStartDate": "2020-06-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce92c4f",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-06-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce92c4e",
+        "ChargeAmount": -1.5
+      },
+      {
+        "ServiceStartDate": "2020-06-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce82c4d",
+        "ChargeAmount": 30
+      },
+      {
+        "ServiceStartDate": "2020-07-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce82c4c",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-07-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce72c4b",
+        "ChargeAmount": -1.5
+      },
+      {
+        "ServiceStartDate": "2020-07-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce72c4a",
+        "ChargeAmount": 30
+      },
+      {
+        "ServiceStartDate": "2020-11-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce62c49",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-11-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434ce52c48",
+        "ChargeAmount": -1.6
+      },
+      {
+        "ServiceStartDate": "2020-11-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434cdb2c47",
+        "ChargeAmount": 32
+      },
+      {
+        "ServiceStartDate": "2020-10-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434cda2c46",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-10-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd92c45",
+        "ChargeAmount": -1.6
+      },
+      {
+        "ServiceStartDate": "2020-10-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd92c44",
+        "ChargeAmount": 32
+      },
+      {
+        "ServiceStartDate": "2020-08-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd82c43",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-08-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd82c42",
+        "ChargeAmount": -1.5
+      },
+      {
+        "ServiceStartDate": "2020-08-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd72c41",
+        "ChargeAmount": 30
+      },
+      {
+        "ServiceStartDate": "2020-09-01",
+        "ChargeName": "Discount Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Fixed Amount",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000031"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd72c40",
+        "ChargeAmount": -1
+      },
+      {
+        "ServiceStartDate": "2020-09-01",
+        "ChargeName": "Loyalty Discount",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Discount-Percentage",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000032"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd62c3f",
+        "ChargeAmount": -1.5
+      },
+      {
+        "ServiceStartDate": "2020-09-01",
+        "ChargeName": "Service Charge",
+        "ProcessedUsages": [],
+        "RatePlanCharge": {
+          "ChargeModel": "Per Unit Pricing",
+          "ChargeType": "Recurring",
+          "ChargeNumber": "C-00000030"
+        },
+        "Id": "2c92c8fc79652bd2017968434cd62c3e",
+        "ChargeAmount": 30
+      }
+    ],
+    "Account": {
+      "Invoices": [
+        {
+          "Balance": 193.45
+        },
+        {
+          "Balance": 108
+        }
+      ]
+    },
+    "InvoiceNumber": "INV00000029",
+    "Balance": 193.45
+  },
+  "default__billingdocuments": [
+    {
+      "BillingDocumentNumber__c": "B-000006",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-18T05:18:31.960Z",
+      "CustomerName__c": "Joe"
+    },
+    {
+      "BillingDocumentNumber__c": "B-000007",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-11T01:49:21.127Z",
+      "CustomerName__c": "Joe"
+    },
+    {
+      "BillingDocumentNumber__c": "B-000011",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-09T02:11:33.622Z",
+      "CustomerName__c": "Joe"
+    },
+    {
+      "BillingDocumentNumber__c": "B-000007",
+      "Currency__c": "USD",
+      "Balance__c": 150,
+      "CreatedDate": "2020-12-08T00:05:31.985Z",
+      "CustomerName__c": "Joe"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "Invoice": {
+    "Account": {
+      "Name": "Leo Liu"
+    },
+    "InvoiceNumber": "INV00000029"
+  },
+  "default__messageses": [
+    {
+      "value__c": "账单编号",
+      "locale__c": "zh_CN",
+      "key__c": "invoice_number"
+    },
+    {
+      "value__c": "账号",
+      "locale__c": "zh_CN",
+      "key__c": "account_name"
+    }
+  ]
+}

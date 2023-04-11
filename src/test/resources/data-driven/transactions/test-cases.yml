@@ -1,0 +1,45 @@
+---
+name: Transactions
+description: Compose multiple types of builtin list into a new list.
+
+template: |
+  {{#Invoice}}
+      {{#Cmd_Compose(Transactions)}}
+  
+        {{#Cmd_Column(TransactionType)}}Transaction Type{{/Cmd_Column(TransactionType)}}
+        {{#Cmd_Column(TransactionDate)}}Transaction Date{{/Cmd_Column(TransactionDate)}}
+        {{#Cmd_Column(TransactionNumber)}}Transaction Number{{/Cmd_Column(TransactionNumber)}}
+        {{#Cmd_Column(Description)}}Description{{/Cmd_Column(Description)}}
+        {{#Cmd_Column(PaymentMethodType)}}Payment Method Type{{/Cmd_Column(PaymentMethodType)}}
+        {{#Cmd_Column(PaymentMethodNumber)}}Payment Method Number{{/Cmd_Column(PaymentMethodNumber)}}
+        {{#Cmd_Column(AppliedAmount)}}Applied Amount{{/Cmd_Column(AppliedAmount)}}
+
+        {{! Payments }}
+        {{! ach }}
+        {{PaymentParts|FilterByValue(Payment.Type,EQ,Electronic)|FilterByValue(Payment.Status,EQ,Processed)|FilterByValue(Payment.PaymentMethodSnapshot.Type,EQ,ACH)|Map("Payment",Payment.EffectiveDate,Payment.PaymentNumber,Payment.Comment,Payment.PaymentMethodSnapshot.Type,Payment.PaymentMethodSnapshot.AchAccountNumberMask,Amount)}}
+        {{! credit card }}
+        {{PaymentParts|FilterByValue(Payment.Type,EQ,Electronic)|FilterByValue(Payment.Status,EQ,Processed)|FilterByValue(Payment.PaymentMethodSnapshot.Type,EQ,CreditCard)|Map("Payment",Payment.EffectiveDate,Payment.PaymentNumber,Payment.Comment,Payment.PaymentMethodSnapshot.Type,Payment.PaymentMethodSnapshot.CreditCardMaskNumber,Amount)}}
+        {{! BankTransfer }}
+        {{PaymentParts|FilterByValue(Payment.Type,EQ,Electronic)|FilterByValue(Payment.Status,EQ,Processed)|FilterByValue(Payment.PaymentMethodSnapshot.Type,EQ,BankTransfer)|Map("Payment",Payment.EffectiveDate,Payment.PaymentNumber,Payment.Comment,Payment.PaymentMethodSnapshot.Type,Payment.PaymentMethodSnapshot.BankTransferAccountNumberMask,Amount)}}
+        {{! Other Electronic }}
+        {{PaymentParts|FilterByValue(Payment.Type,EQ,Electronic)|FilterByValue(Payment.Status,EQ,Processed)|FilterByValue(Payment.PaymentMethodSnapshot.Type,NE,BankTransfer)|FilterByValue(Payment.PaymentMethodSnapshot.Type,NE,CreditCard)|FilterByValue(Payment.PaymentMethodSnapshot.Type,NE,ACH)|Map("Payment",Payment.EffectiveDate,Payment.PaymentNumber,Payment.Comment,Payment.PaymentMethodSnapshot.Type,'',Amount)}}
+        {{! external }}
+        {{PaymentParts|FilterByValue(Payment.Type,EQ,External)|Map("Payment",Payment.EffectiveDate,Payment.PaymentNumber,Payment.Comment,Payment.PaymentMethod.Type,'',Amount)}}
+
+        {{! CreditMemoParts }}
+        {{CreditMemoParts|FilterByValue(CreditMemo.Status,EQ,Posted)|Map("CreditMemo",CreditMemo.MemoDate,CreditMemo.MemoNumber,CreditMemo.Comments,'','',Amount)}}
+
+      {{/Cmd_Compose(Transactions)}}
+  
+      Transaction Type | Transaction Date | Transaction Number | Description | Payment Method Type | Payment Method Number | Applied Amount
+      {{#Transactions|SortBy(TransactionDate,ASC,TransactionNumber,ASC)}}
+        {{TransactionType}} | {{TransactionDate}} | {{TransactionNumber}} | {{Description}} | {{PaymentMethodType}} | {{PaymentMethodNumber}} | -{{AppliedAmount}}
+      {{/Transactions|SortBy(TransactionDate,ASC,TransactionNumber,ASC)}}
+  {{/Invoice}}
+dataFile: ./data-driven/transactions/transactions.json
+expectedRendered: |
+  Transaction Type | Transaction Date | Transaction Number | Description | Payment Method Type | Payment Method Number | Applied Amount
+  CreditMemo | 2021-06-01 | CM00000004 |  |  |  | -33.45
+  CreditMemo | 2021-06-04 | CM00000003 |  |  |  | -60
+  Payment | 2021-06-04 | P-00000021 |  | CreditCard | ************1111 | -100
+ignoreWhitespace: true

@@ -1,0 +1,23 @@
+{
+  "Invoice": {
+    "Account": {
+      "Invoices": [
+        {
+          "Amount": 193.45,
+          "Balance": 193.45,
+          "InvoiceDate": "2020-12-31"
+        },
+        {
+          "Amount": 150,
+          "Balance": 150,
+          "InvoiceDate": "2021-06-01"
+        },
+        {
+          "Amount": 108,
+          "Balance": 108,
+          "InvoiceDate": "2020-06-01"
+        }
+      ]
+    }
+  }
+}

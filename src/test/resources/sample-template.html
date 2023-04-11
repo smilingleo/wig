@@ -1,0 +1,53 @@
+<html>
+<body>
+InvoiceNumber: {{Invoice.InvoiceNumber}}
+InvoiceBalance: {{Invoice.Balance}}
+
+<h3>First root object</h3>
+{{#Invoice}}
+    <span>Filter then Group</span><br>
+    {{#InvoiceItems|FilterByValue(ChargeAmount,GT,0)|GroupBy(ChargeName)}}
+        {{Cmd_Assign(ItemId,Id)}}
+        {{ChargeName}}
+        <ul>
+            {{#_Group}}
+            <li> {{Id}} - {{ChargeAmount}} - {{ServiceStartDate|Localise}}</li>
+            {{/_Group}}
+        </ul>
+        Subtotal: {{_Group|Sum(ChargeAmount)}}
+        Account Invoices Total: {{Account.Invoices|Sum(Balance)}}
+    {{/InvoiceItems|FilterByValue(ChargeAmount,GT,0)|GroupBy(ChargeName)}}
+
+    <span>Group By Substr of a field</span><br>
+    {{#InvoiceItems|GroupBy(ServiceStartDate|Substr(0,7))}}
+        {{ServiceStartDate|Substr(0,7)}}
+        <ul>
+            {{#_Group}}
+            <li>{{Id}} - {{ChargeAmount}} - {{ServiceStartDate}}</li>
+            {{/_Group}}
+        </ul>
+        Subtotal: {{_Group|Sum(ChargeAmount)}}
+    {{/InvoiceItems|GroupBy(ServiceStartDate|Substr(0,7))}}
+
+    <span>Charges</span><br>
+    {{#InvoiceItems|Map(RatePlanCharge)|Uniq}}
+        * {{ChargeNumber}} - {{ChargeModel}} - {{ChargeType}}
+    {{/InvoiceItems|Map(RatePlanCharge)|Uniq}}
+
+    <span>Usage</span><br>
+    {{#InvoiceItems|FlatMap(ProcessedUsages)|Uniq}}
+        * {{Usage.Quantity}} - {{BillingPeriodStartDate}} - {{BillingPeriodEndDate}}
+    {{/InvoiceItems|FlatMap(ProcessedUsages)|Uniq}}
+
+    <span>If not blank, show total invoice balance of current account</span><br>
+    {{^Account.Invoices|IsEmpty}}
+        Account Invoices Total: {{Account.Invoices|Sum(Balance)}}
+    {{/Account.Invoices|IsEmpty}}
+{{/Invoice}}
+
+<h3>Another root object</h3>
+{{#default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)|FilterByValue(CreatedDate,GT,2020-12-01T00:00:00.000Z)}}
+    {{BillingDocumentNumber__c}} - {{Currency__c}} - {{Balance__c}}
+{{/default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)|FilterByValue(CreatedDate,GT,2020-12-01T00:00:00.000Z)}}
+</body>
+</html>

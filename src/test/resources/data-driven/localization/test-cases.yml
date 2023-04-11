@@ -1,0 +1,181 @@
+---
+name: Localization with zh_CN
+description: Use custom object to store locale messages
+template: |
+  {{Cmd_ListToDict(default__messageses|FilterByValue(locale__c,EQ,zh_CN),key__c,value__c,Message)}}
+  {{#Invoice}}
+    {{Message.account_name}}: {{Account.Name}}
+    {{Message.invoice_number}}: {{InvoiceNumber}}
+  {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "Name": "Leo Liu"
+        },
+        "InvoiceNumber": "INV00000029"
+      },
+      "default__messageses": [
+          {
+              "value__c": "账单编号",
+              "locale__c": "zh_CN",
+              "key__c": "invoice_number"
+          },
+          {
+              "value__c": "账号",
+              "locale__c": "zh_CN",
+              "key__c": "account_name"
+          }
+      ]
+  }
+expectedRendered: |
+  账号: Leo Liu
+  账单编号: INV00000029
+ignoreWhitespace: true
+
+---
+name: Localization by Value - Command is defined inside Invoice section.
+description: Default__Message has no relationship with Invoice, but customer defined it inside Invoice.
+template: |
+  {{#Invoice}}
+    {{Cmd_ListToDict(default__messageses|FilterByValue(locale__c,EQ,"zh_CN"),key__c,value__c,Message)}}
+    {{Message.account_name}}: {{Account.Name}}
+    {{Message.invoice_number}}: {{InvoiceNumber}}
+  {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "Name": "Leo Liu"
+        },
+        "InvoiceNumber": "INV00000029"
+      },
+      "default__messageses": [
+          {
+              "value__c": "账单编号",
+              "locale__c": "zh_CN",
+              "key__c": "invoice_number"
+          },
+          {
+              "value__c": "账号",
+              "locale__c": "zh_CN",
+              "key__c": "account_name"
+          }
+      ]
+    }
+  }
+expectedRendered: |
+  账号: Leo Liu
+  账单编号: INV00000029
+ignoreWhitespace: true
+
+---
+name: Localization by Account Custom Field
+description: |
+  Filter localization message by Account custom field value dynamically.
+  Note:
+    * The new created `Message` object will be appended to the object context where it is defined.
+      In following case, it's added into the Invoice object, e.g., `Invoice.Message`
+      if the command is placed outside Invoice section, it will be appended to anonymous root object.
+    * The input of `FilterByRef` is `default__messages`, not `Invoice`, and the CO object is not reachable from Invoice
+      So, the reference field name argument has to be a full-path, `Invoice.Account.Reseller__c`,
+      even though it's defined inside an `Invoice` section.
+template: |
+  {{#Invoice}}
+    {{Cmd_ListToDict(default__messageses|FilterByRef(locale__c,EQ,Invoice.Account.Reseller__c),key__c,value__c,Message)}}
+    {{Message.account_name}}: {{Account.Name}}
+    {{Message.invoice_number}}: {{InvoiceNumber}}
+  {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "Name": "Leo Liu",
+          "Reseller__c": "zh_CN"
+        },
+        "InvoiceNumber": "INV00000029"
+      },
+      "default__messageses": [
+          {
+              "value__c": "账单编号",
+              "locale__c": "zh_CN",
+              "key__c": "invoice_number"
+          },
+          {
+              "value__c": "Invoice Number",
+              "locale__c": "en_US",
+              "key__c": "invoice_number"
+          },
+          {
+              "value__c": "账号",
+              "locale__c": "zh_CN",
+              "key__c": "account_name"
+          },
+          {
+              "value__c": "Account Name",
+              "locale__c": "en_US",
+              "key__c": "account_name"
+          }
+      ]
+  }
+expectedRendered: |
+  账号: Leo Liu
+  账单编号: INV00000029
+ignoreWhitespace: true
+
+---
+name: Localization with en_US
+description: Use custom object to store locale messages
+template: |
+  {{Cmd_ListToDict(default__messageses|FilterByValue(locale__c,EQ,en_US),key__c,value__c,Message)}}
+  {{#Invoice}}
+     {{Message.account_name}}: {{Account.Name}}
+  {{Message.invoice_number}}: {{InvoiceNumber}}
+  {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "Name": "Leo Liu"
+        },
+        "InvoiceNumber": "INV00000029"
+      },
+      "default__messageses": [
+          {
+              "value__c": "Invoice Number",
+              "locale__c": "en_US",
+              "key__c": "invoice_number"
+          },
+          {
+              "value__c": "Account Name",
+              "locale__c": "en_US",
+              "key__c": "account_name"
+          }
+      ]
+  }
+expectedRendered: |
+  Account Name: Leo Liu
+  Invoice Number: INV00000029
+ignoreWhitespace: true
+
+---
+name: Localise number and date/datetime fields
+template: |
+  {{#Invoice}}
+    {{Balance|Localise(it_IT)}} {{Account.Currency|Symbol}}
+    {{CreatedDate|Localise(it_IT)}}
+  {{/Invoice}}
+data: |
+  {
+        "Invoice": {
+          "Balance": 1234.56,
+          "CreatedDate": "2021-06-07 01:02:03",
+          "Account": {
+            "Currency": "EUR"
+          }
+        }
+  }
+expectedRendered: |
+  1.234,56 €
+  07/06/2021 01:02:03
+ignoreWhitespace: true

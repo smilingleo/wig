@@ -1,0 +1,19 @@
+
+{{#Invoice}}
+
+<h3>The following shows total discount of an invoice item.</h3>
+
+    {{#InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+        {{Cmd_Assign(RegularItemId,Id)}}{{ChargeName}} - {{ChargeAmount}} - {{InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)|Sum(ChargeAmount)}}
+    {{/InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+
+
+<h3>The following shows discount details for each invoice item</h3>
+
+    {{#InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+        {{Cmd_Assign(RegularItemId,Id)}}{{ChargeName}} - {{ChargeAmount}}
+            {{#InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)}}
+                * {{ChargeName}} - {{ChargeAmount}}
+            {{/InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)}}
+        {{/InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+{{/Invoice}}

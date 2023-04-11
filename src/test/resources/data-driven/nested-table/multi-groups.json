@@ -1,0 +1,384 @@
+{
+  "Invoice": {
+    "InvoiceItems": [
+      {
+        "UnitPrice": 9,
+        "TaxAmount": 1,
+        "ServiceEndDate": "2020-12-31",
+        "ServiceStartDate": "2020-12-01",
+        "Quantity": 3,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 27
+      },
+      {
+        "UnitPrice": 10,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-06-30",
+        "ServiceStartDate": "2020-06-01",
+        "Quantity": 3,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 30
+      },
+      {
+        "UnitPrice": 10,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-07-31",
+        "ServiceStartDate": "2020-07-01",
+        "Quantity": 3,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 30
+      },
+      {
+        "UnitPrice": 8,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-11-30",
+        "ServiceStartDate": "2020-11-01",
+        "Quantity": 4,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 32
+      },
+      {
+        "UnitPrice": 8,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-10-31",
+        "ServiceStartDate": "2020-10-01",
+        "Quantity": 4,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 32
+      },
+      {
+        "UnitPrice": 10,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-08-31",
+        "ServiceStartDate": "2020-08-01",
+        "Quantity": 3,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 30
+      },
+      {
+        "UnitPrice": 10,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-09-30",
+        "ServiceStartDate": "2020-09-01",
+        "Quantity": 3,
+        "ChargeName": "Service Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Main Product"
+          },
+          "ChargeModel": "Per Unit Pricing"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": 30
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-12-31",
+        "ServiceStartDate": "2020-12-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-12-31",
+        "ServiceStartDate": "2020-12-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.35
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-06-30",
+        "ServiceStartDate": "2020-06-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-06-30",
+        "ServiceStartDate": "2020-06-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.5
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-07-31",
+        "ServiceStartDate": "2020-07-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-07-31",
+        "ServiceStartDate": "2020-07-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.5
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-11-30",
+        "ServiceStartDate": "2020-11-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-11-30",
+        "ServiceStartDate": "2020-11-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.6
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-10-31",
+        "ServiceStartDate": "2020-10-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-10-31",
+        "ServiceStartDate": "2020-10-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.6
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-08-31",
+        "ServiceStartDate": "2020-08-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-08-31",
+        "ServiceStartDate": "2020-08-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.5
+      },
+      {
+        "UnitPrice": 1,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-09-30",
+        "ServiceStartDate": "2020-09-01",
+        "Quantity": 1,
+        "ChargeName": "Discount Charge",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Fixed Amount"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 5,
+        "TaxAmount": 0,
+        "ServiceEndDate": "2020-09-30",
+        "ServiceStartDate": "2020-09-01",
+        "Quantity": 1,
+        "ChargeName": "Loyalty Discount",
+        "RatePlanCharge": {
+          "RatePlan": {
+            "Name": "Discount Plan"
+          },
+          "ChargeModel": "Discount-Percentage"
+        },
+        "Subscription": {
+          "Name": "A-S00000031"
+        },
+        "ChargeAmount": -1.5
+      }
+    ]
+  }
+}

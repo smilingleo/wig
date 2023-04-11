@@ -1,0 +1,152 @@
+{
+  "Invoice": {
+    "InvoiceItems": [
+      {
+        "ServiceStartDate": "2020-05-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 5
+      },
+      {
+        "ServiceStartDate": "2020-02-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 3
+      },
+      {
+        "ServiceStartDate": "2020-07-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 7
+      },
+      {
+        "ServiceStartDate": "2020-03-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 4
+      },
+      {
+        "ServiceStartDate": "2020-01-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 2
+      },
+      {
+        "ServiceStartDate": "2020-03-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-08-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-12-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-07-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-06-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-04-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-11-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-09-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-01-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-05-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-10-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-02-01",
+        "ChargeName": "Billing",
+        "ChargeAmount": 1234
+      },
+      {
+        "ServiceStartDate": "2020-01-01",
+        "ChargeName": "One-Time Charge 0",
+        "ChargeAmount": 10
+      },
+      {
+        "ServiceStartDate": "2020-08-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2020-10-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2021-03-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2020-09-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2020-06-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2021-01-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2020-04-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2021-02-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2020-12-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      },
+      {
+        "ServiceStartDate": "2020-11-01",
+        "ChargeName": "Usage Charge",
+        "ChargeAmount": 0
+      }
+    ],
+    "Account": {
+      "AccountNumber": "A00000060",
+      "Name": "Leo Tst"
+    },
+    "InvoiceNumber": "INV00000023",
+    "Balance": 0
+  }
+}

@@ -1,0 +1,19 @@
+{{#Invoice}}
+    {{Cmd_Assign(MainInvoiceId,Id)}}
+    {{#Cmd_Compose(PreviousTransactions)}}
+        {{#Cmd_Column(EffectiveDate)}}Effective Date{{/Cmd_Column(EffectiveDate)}}
+        {{#Cmd_Column(Amount)}}Amount{{/Cmd_Column(Amount)}}
+        {{#Cmd_Column(TransactionType)}}Transaction Type{{/Cmd_Column(TransactionType)}}
+
+        {{PaymentApplications|Map(EffectiveDate,ApplyAmount,"Payment")}}
+        {{InvoiceAdjustments|Map(CreatedDate,Amount,"InvoiceAdjustment")}}
+        {{CreditMemoApplications|Map(EffectiveDate,Amount,"CreditMemo")}}
+
+        <span>there is no index on `ar_refund_applications.invoice_id` so that there is no `refundapplications` connection on invoice object.</span>
+        {{! RefundApplications|FilterByRef(InvoiceId,EQ,MainInvoiceId)|Map(EffectiveDate,ApplyAmount,"Refund") }}
+    {{/Cmd_Compose(PreviousTransactions)}}
+
+    {{#PreviousTransactions|SortBy(EffectiveDate,DESC)}}
+        {{EffectiveDate}} - {{Amount}} - {{TransactionType}}
+    {{/PreviousTransactions|SortBy(EffectiveDate,DESC)}}
+{{/Invoice}}

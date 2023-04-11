@@ -1,0 +1,153 @@
+{
+  "Invoice": {
+    "InvoiceItems": [
+      {
+        "Id": "2c92c8fc79652bd2017968434cea2c52",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cea2c50",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cea2c51",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cea2c50",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.35
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cea2c50",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 27
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce92c4f",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434ce82c4d",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce92c4e",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434ce82c4d",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.5
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce82c4d",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 30
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce82c4c",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434ce72c4a",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce72c4b",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434ce72c4a",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.5
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce72c4a",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 30
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce62c49",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cdb2c47",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434ce52c48",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cdb2c47",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.6
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cdb2c47",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 32
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cda2c46",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cd92c44",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd92c45",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cd92c44",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.6
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd92c44",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 32
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd82c43",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cd72c41",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd82c42",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cd72c41",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.5
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd72c41",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 30
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd72c40",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cd62c3e",
+        "ProcessingType": "1",
+        "ChargeName": "Discount Charge",
+        "ChargeAmount": -1
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd62c3f",
+        "AppliedToInvoiceItemId": "2c92c8fc79652bd2017968434cd62c3e",
+        "ProcessingType": "1",
+        "ChargeName": "Loyalty Discount",
+        "ChargeAmount": -1.5
+      },
+      {
+        "Id": "2c92c8fc79652bd2017968434cd62c3e",
+        "AppliedToInvoiceItemId": null,
+        "ProcessingType": "0",
+        "ChargeName": "Service Charge",
+        "ChargeAmount": 30
+      }
+    ]
+  }
+}

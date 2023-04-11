@@ -1,0 +1,72 @@
+{
+  "Invoice": {
+    "InvoiceItems": [
+      {
+        "UnitPrice": 10,
+        "TaxAmount": -0.09,
+        "AppliedToInvoiceItemId": "2c92c8fc7d2c72a0017d2d1ff6f8458f",
+        "ServiceEndDate": "2022-01-31",
+        "ServiceStartDate": "2022-01-01",
+        "ProcessingType": "1",
+        "Quantity": 1,
+        "ChargeName": "Discount",
+        "RatePlanCharge": {
+          "Id": "2c92c8fe7d2c7363017d2d1cad960eaf",
+          "ChargeNumber": "C-00000106"
+        },
+        "Id": "2c92c8fc7d2c72a0017d2d1ff6f94590",
+        "ChargeAmount": -1
+      },
+      {
+        "UnitPrice": 10,
+        "TaxAmount": 0.87,
+        "AppliedToInvoiceItemId": null,
+        "ServiceEndDate": "2022-01-31",
+        "ServiceStartDate": "2022-01-01",
+        "ProcessingType": "0",
+        "Quantity": 1,
+        "ChargeName": "Membership",
+        "RatePlanCharge": {
+          "Id": "2c92c8fe7d2c7363017d2d1cad910eae",
+          "ChargeNumber": "C-00000105"
+        },
+        "Id": "2c92c8fc7d2c72a0017d2d1ff6f8458f",
+        "ChargeAmount": 10
+      },
+      {
+        "UnitPrice": 10,
+        "TaxAmount": -0.04,
+        "AppliedToInvoiceItemId": "2c92c8fc7d2c72a0017d2d1ff6f5458d",
+        "ServiceEndDate": "2022-01-31",
+        "ServiceStartDate": "2022-01-01",
+        "ProcessingType": "1",
+        "Quantity": 1,
+        "ChargeName": "Discount",
+        "RatePlanCharge": {
+          "Id": "2c92c8fe7d2c7363017d2d1cad960eaf",
+          "ChargeNumber": "C-00000106"
+        },
+        "Id": "2c92c8fc7d2c72a0017d2d1ff6f8458e",
+        "ChargeAmount": -0.5
+      },
+      {
+        "UnitPrice": 4.99,
+        "TaxAmount": 0.44,
+        "AppliedToInvoiceItemId": null,
+        "ServiceEndDate": "2022-01-31",
+        "ServiceStartDate": "2022-01-01",
+        "ProcessingType": "0",
+        "Quantity": 1,
+        "ChargeName": "Training",
+        "RatePlanCharge": {
+          "Id": "2c92c8fe7d2c7363017d2d1cad9f0eb0",
+          "ChargeNumber": "C-00000107"
+        },
+        "Id": "2c92c8fc7d2c72a0017d2d1ff6f5458d",
+        "ChargeAmount": 4.99
+      }
+    ],
+    "Id": "2c92c8fc7d2c72a0017d2d1ff6bd458c",
+    "InvoiceNumber": "INV00000050"
+  }
+}

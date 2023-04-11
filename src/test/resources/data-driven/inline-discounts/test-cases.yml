@@ -1,0 +1,181 @@
+---
+name: Inline Discounts
+description: Show inline discounts to each regular invoice item
+template: |
+  {{#Invoice}}
+    {{#InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+      {{Cmd_Assign(RegularItemId,Id)}}{{ChargeName}} - {{ChargeAmount}}
+      {{#InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)}}
+        * {{ChargeName}} - {{ChargeAmount}}
+      {{/InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)}}
+    {{/InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+  {{/Invoice}}
+dataFile: data-driven/inline-discounts/inline-discount.json
+expectedRendered: |
+  Service Charge - 27
+    * Discount Charge - -1
+    * Loyalty Discount - -1.35
+  Service Charge - 30
+    * Discount Charge - -1
+    * Loyalty Discount - -1.5
+  Service Charge - 30
+    * Discount Charge - -1
+    * Loyalty Discount - -1.5
+  Service Charge - 32
+    * Discount Charge - -1
+    * Loyalty Discount - -1.6
+  Service Charge - 32
+    * Discount Charge - -1
+    * Loyalty Discount - -1.6
+  Service Charge - 30
+    * Discount Charge - -1
+    * Loyalty Discount - -1.5
+  Service Charge - 30
+    * Discount Charge - -1
+    * Loyalty Discount - -1.5
+ignoreWhitespace: true
+
+---
+name: Inline Discount Total
+description: Show inline discount total to each regular invoice item
+template: |
+  {{#Invoice}}
+    {{#InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+        {{Cmd_Assign(RegularItemId,Id)}}
+        {{ChargeName}} - {{ChargeAmount}} - {{InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)|Sum(ChargeAmount)}}
+    {{/InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+  {{/Invoice}}
+dataFile: data-driven/inline-discounts/inline-discount.json
+expectedRendered: |
+  Service Charge - 27 - -2.35
+  Service Charge - 30 - -2.5
+  Service Charge - 30 - -2.5
+  Service Charge - 32 - -2.6
+  Service Charge - 32 - -2.6
+  Service Charge - 30 - -2.5
+  Service Charge - 30 - -2.5
+ignoreWhitespace: true
+
+---
+name: Inline Discount Total Using Wp_Eval
+description: Evaluate an expression of 4 numbers and then do rounding and localization.
+template: |
+  {{#Invoice}}
+      ChargeName | Quantity | Unit Price | Service Period | Subtotal | Discount | Tax | Total | ChargeNumber
+      {{#InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+      {{Cmd_Assign(RegularItemId,Id)}}
+      {{ChargeName}} | {{Quantity|Round(0)}} | {{UnitPrice}} | {{ServiceStartDate}} - {{ServiceEndDate}} |  {{ChargeAmount}} | {{InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)|Sum(ChargeAmount)}} | {{#Wp_Eval}}
+          {{TaxAmount}}+{{InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)|Sum(TaxAmount)}}|Round(2)|Localise
+      {{/Wp_Eval}} | {{#Wp_Eval}}
+          {{ChargeAmount}} + {{TaxAmount}} + {{InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)|Sum(ChargeAmount)}} + {{InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)|Sum(TaxAmount)}}|Round(2)|Localise
+      {{/Wp_Eval}} | {{RatePlanCharge.ChargeNumber}}
+      {{/InvoiceItems|FilterByValue(ProcessingType,EQ,0)}}
+  {{/Invoice}}
+dataFile: data-driven/inline-discounts/discount-with-tax.json
+expectedRendered: |
+  ChargeName | Quantity | Unit Price | Service Period | Subtotal | Discount | Tax | Total | ChargeNumber
+  Membership | 1 | 10 | 2022-01-01 - 2022-01-31 |  10 | -1.0 | 0.78 | 9.78 | C-00000105
+  Training | 1 | 4.99 | 2022-01-01 - 2022-01-31 |  4.99 | -0.5 | 0.40 | 4.89 | C-00000107
+
+
+---
+name: Inline discounts as separate line items
+description: |
+  Assume there is an account level discount charge itself belonging to subscription `A-S00000069`,
+  but it applies to subscription `A-S00000065`, customers want to show discount charges along with the regular charge,
+  in this case, customers want to show the subscription name as `A-S00000065` for the discount charge.
+template: |
+  {{#Invoice}}
+  {{! first level loop to show all regular items }}
+  <table>
+      {{#InvoiceItems|FilterByValue(ProcessingType,EQ,0)|GroupBy(Subscription.Name)}}
+      {{#_Group}}
+      {{Cmd_Assign(RegularItemId,Id)}}
+      {{Cmd_Assign(RegularItemSspName,Subscription.Name)}}
+      <tr>
+          <td>{{RatePlanCharge.Name}}</td>
+          <td>{{ServiceStartDate}} - {{ServiceEndDate}}</td>
+          <td>{{Quantity}}</td>
+          <td>{{ChargeAmount}}</td>
+          <td>{{RegularItemSspName}}</td>
+      </tr>
+      {{#InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)}}
+      <tr>
+          <td>{{RatePlanCharge.Name}}</td>
+          <td>{{ServiceStartDate}} - {{ServiceEndDate}}</td>
+          <td>{{Quantity}}</td>
+          <td>{{ChargeAmount}}</td>
+          <td>{{RegularItemSspName}}</td>
+      </tr>
+      {{/InvoiceItems|FilterByRef(AppliedToInvoiceItemId,EQ,RegularItemId)}}
+      {{/_Group}}
+      {{/InvoiceItems|FilterByValue(ProcessingType,EQ,0)|GroupBy(Subscription.Name)}}
+  </table>
+  {{/Invoice}}
+data: |
+  {
+          "Invoice": {
+              "InvoiceItems": [
+                      {
+                              "AppliedToInvoiceItemId": "8ad0828a7ed28d4f017ed66563c54222",
+                              "ServiceEndDate": "2022-02-28",
+                              "ServiceStartDate": "2022-02-01",
+                              "ProcessingType": "1",
+                              "Quantity": 1,
+                              "RatePlanCharge": {
+                                  "Name": "Partner Margin",
+                                  "ChargeType": "Recurring",
+                                  "ChargeModel": "Discount-Percentage",
+                                  "DiscountLevel": "account",
+                                  "ApplyDiscountTo": "ONETIMERECURRINGUSAGE",
+                                  "Id": "8ad084a67eb366cc017eb882eec315a5"
+                              },
+                              "Id": "8ad0828a7ed28d4f017ed66563c64224",
+                              "Subscription": {
+                                  "Id": "8ad084a67eb366cc017eb882ee691599",
+                                  "Name": "A-S00000069"
+                              },
+                              "ChargeAmount": -100
+                      },
+                      {
+                              "AppliedToInvoiceItemId": null,
+                              "ServiceEndDate": "2022-02-28",
+                              "ServiceStartDate": "2022-02-01",
+                              "ProcessingType": "0",
+                              "Quantity": 10,
+                              "RatePlanCharge": {
+                                  "Name": "Subscription Fee",
+                                  "ChargeType": "Recurring",
+                                  "ChargeModel": "Per Unit Pricing",
+                                  "DiscountLevel": null,
+                                  "ApplyDiscountTo": null,
+                                  "Id": "8ad0965d7eb31805017eb80ea5a9515a"
+                              },
+                              "Id": "8ad0828a7ed28d4f017ed66563c54222",
+                              "Subscription": {
+                                  "Id": "8ad0965d7eb31805017eb80ea560514c",
+                                  "Name": "A-S00000065"
+                              },
+                              "ChargeAmount": 200
+                      }
+              ]
+          }
+  }
+expectedRendered: |
+  <table>
+  <tr>
+  <td>Subscription Fee</td>
+  <td>2022-02-01 - 2022-02-28</td>
+  <td>10</td>
+  <td>200</td>
+  <td>A-S00000065</td>
+  </tr>
+  <tr>
+  <td>Partner Margin</td>
+  <td>2022-02-01 - 2022-02-28</td>
+  <td>1</td>
+  <td>-100</td>
+  <td>A-S00000065</td>
+  </tr>
+  </table>
+

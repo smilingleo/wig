@@ -1,0 +1,805 @@
+---
+name: Concat Usage
+description: |
+  Demonstrate how to use Concat decorator.
+  Concat argument can be merge field with decorator, dotted path and variable.
+template: |
+  {{#Invoice}}
+  {{Cmd_Assign(VarNumber,InvoiceNumber)}}
+  {{.|Concat(Account.Name,VarNumber,'-')}}
+  {{.|Concat(Account.Name,VarNumber|Substr(0,3),'-')}}
+  {{/Invoice}}
+
+data: |
+  {
+    "Invoice": {
+      "InvoiceNumber": "INV00000033",
+      "Account": {
+        "Name": "Leo"
+      }
+    }
+  }
+expectedRendered: |
+  Leo-INV00000033
+  Leo-INV
+
+---
+name: EqualToVal Usage
+description: |
+  Demonstrate how to use EqualToVal decorator
+template: |
+  {{Invoice.InvoiceNumber|EqualToVal(INV00000033)}}
+  {{Invoice.Balance|EqualToVal(1000)}}
+data: |
+  {
+      "Invoice": {
+        "InvoiceNumber": "INV00000033",
+        "Balance": 20
+      }
+  }
+expectedRendered: |
+  true
+  false
+
+---
+name: IsBlank Usage
+description: |
+  Demonstrate how to use IsBlank decorator
+template: |
+  {{#Invoice}}
+  {{^InvoiceNumber|IsBlank}}
+  Invoice Number Not Blank, {{InvoiceNumber}}
+  {{/InvoiceNumber|IsBlank}}
+  {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "InvoiceNumber": "INV00000033"
+      }
+  }
+expectedRendered: |
+  Invoice Number Not Blank, INV00000033
+
+---
+name: IsEmpty Usage
+description: |
+  Demonstrate how to use IsEmpty decorator
+template: |
+  {{^Invoice.InvoiceItems|IsEmpty}}
+  {{#Invoice.InvoiceItems|First(2)}}
+    {{ChargeName}} - {{ChargeAmount}}
+  {{/Invoice.InvoiceItems|First(2)}}
+  {{/Invoice.InvoiceItems|IsEmpty}}
+dataFile: data-driven/nested-table/for-table.json
+expectedRendered: |
+  Usage Charge - 5
+  Usage Charge - 3
+
+
+---
+name: Max Usage
+description: |
+  Demonstrate how to use Max decorator
+template: |
+  Max ChargeAmount: {{Invoice.InvoiceItems|Max(ChargeAmount)}}
+dataFile: data-driven/nested-table/nested-table.json
+expectedRendered: |
+  Max ChargeAmount: 32
+
+---
+name: GroupBy with nullable property
+description: |
+  Demonstrate how GroupBy handle nullable property.
+  If the property is valid but null, we will replace the null with "" string.
+template: |
+  {{#Invoice}}
+  {{#InvoiceItems|GroupBy(AppliedToInvoiceItemId)}}
+  AppliedToInvoiceItemId: {{AppliedToInvoiceItemId}}
+  Items:
+  {{#_Group}}
+    {{ChargeName}} - {{ChargeAmount}}
+  {{/_Group}}
+  {{/InvoiceItems|GroupBy(AppliedToInvoiceItemId)}}
+  {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "InvoiceItems": [
+              {
+                  "Id": "1",
+                  "ChargeName": "C-00001",
+                  "ChargeAmount": 10,
+                  "AppliedToInvoiceItemId": null
+              },
+              {
+                  "Id": "2",
+                  "ChargeName": "C-00002",
+                  "ChargeAmount": -5,
+                  "AppliedToInvoiceItemId": "1"
+              },
+              {
+                  "Id": "3",
+                  "ChargeName": "C-00003",
+                  "ChargeAmount": -1,
+                  "AppliedToInvoiceItemId": "1"
+              }
+          ]
+      }
+  }
+expectedRendered: |
+  AppliedToInvoiceItemId:
+  Items:
+  C-00001 - 10
+  AppliedToInvoiceItemId: 1
+  Items:
+  C-00002 - -5
+  C-00003 - -1
+
+
+---
+name: GroupBy variable
+description: Declare a variable first, and then group by that variable.
+template: |
+  {{#Invoice}}
+    {{#InvoiceItems}}
+      {{! preprocess the data, append a new attribute for each invoice item }}
+      {{Cmd_Assign(VarPeriodInMonth,.|Concat(ServiceStartDate|Substr(0,7),ServiceEndDate|Substr(0,7),"_"))}}
+    {{/InvoiceItems}}
+  {{/Invoice}}
+  {{#Invoice}}
+    {{#InvoiceItems|GroupBy(VarPeriodInMonth)}}
+      {{VarPeriodInMonth}}
+      {{#_Group}}
+        {{ServiceStartDate}}:{{ServiceEndDate}} - {{ChargeAmount}} - {{Id}}
+      {{/_Group}}
+    {{/InvoiceItems|GroupBy(VarPeriodInMonth)}}
+  {{/Invoice}}
+dataFile: data-driven/nested-table/multi-groups.json
+expectedRendered: |
+  2020-12_2020-12
+  2020-12-01:2020-12-31 - 27 -
+  2020-12-01:2020-12-31 - -1 -
+  2020-12-01:2020-12-31 - -1.35 -
+  2020-06_2020-06
+  2020-06-01:2020-06-30 - 30 -
+  2020-06-01:2020-06-30 - -1 -
+  2020-06-01:2020-06-30 - -1.5 -
+  2020-07_2020-07
+  2020-07-01:2020-07-31 - 30 -
+  2020-07-01:2020-07-31 - -1 -
+  2020-07-01:2020-07-31 - -1.5 -
+  2020-11_2020-11
+  2020-11-01:2020-11-30 - 32 -
+  2020-11-01:2020-11-30 - -1 -
+  2020-11-01:2020-11-30 - -1.6 -
+  2020-10_2020-10
+  2020-10-01:2020-10-31 - 32 -
+  2020-10-01:2020-10-31 - -1 -
+  2020-10-01:2020-10-31 - -1.6 -
+  2020-08_2020-08
+  2020-08-01:2020-08-31 - 30 -
+  2020-08-01:2020-08-31 - -1 -
+  2020-08-01:2020-08-31 - -1.5 -
+  2020-09_2020-09
+  2020-09-01:2020-09-30 - 30 -
+  2020-09-01:2020-09-30 - -1 -
+  2020-09-01:2020-09-30 - -1.5 -
+
+---
+name: SortBy
+description: |
+  Demonstrate how to use SortBy.
+  SortBy takes pairs of arguments, first argument of a pair is either a merge field or a variable.
+  The second one is ASC/DESC.
+template: |
+  {{#Invoice}}
+  {{#InvoiceItems}}
+    {{Cmd_Assign(VarId,Id)}}
+  {{/InvoiceItems}}
+  {{#InvoiceItems|SortBy(ChargeName,ASC)}}
+  {{ChargeAmount}}
+  {{/InvoiceItems|SortBy(ChargeName,ASC)}}
+  {{#InvoiceItems|SortBy(VarId,DESC)}}
+  {{ChargeAmount}}
+  {{/InvoiceItems|SortBy(VarId,DESC)}}
+  {{/Invoice}}
+
+data: |
+  {
+      "Invoice": {
+        "InvoiceItems": [
+              {
+                  "Id": "1",
+                  "ChargeName": "C-00001",
+                  "ChargeAmount": 10
+              },
+              {
+                  "Id": "2",
+                  "ChargeName": "C-00002",
+                  "ChargeAmount": -5
+              },
+              {
+                  "Id": "3",
+                  "ChargeName": "C-00003",
+                  "ChargeAmount": -1
+              }
+          ]
+      }
+  }
+expectedRendered: |
+  10
+  -5
+  -1
+  -1
+  -5
+  10
+
+---
+name: FlatMap with GroupBy
+description: |
+  Demonstrate how to chain two decorators, and also to be aware of the FlatMap will change the inputField
+template: |
+  {{#Invoice}}
+  {{#InvoiceItems|FlatMap(TaxationItems)|GroupBy(Name,TaxRateType)}}
+  TaxName: {{Name}}
+  RateType: {{#_Group|SortBy(TaxRateType,ASC)}}{{TaxRateType}} {{/_Group|SortBy(TaxRateType,ASC)}}
+  {{/InvoiceItems|FlatMap(TaxationItems)|GroupBy(Name,TaxRateType)}}
+  {{/Invoice}}
+
+data: |
+  {
+      "Invoice": {
+        "InvoiceItems": [
+              {
+                  "TaxationItems": [
+                          {
+                              "Name": "tax1",
+                              "TaxRateType": "type1",
+                              "TaxRate": 1
+                          },
+                          {
+                              "Name": "tax1",
+                              "TaxRateType": "type2",
+                              "TaxRate": 2
+                          },
+                          {
+                              "Name": "tax2",
+                              "TaxRateType": "type1",
+                              "TaxRate": 3
+                          }
+                  ]
+              }
+        ]
+      }
+  }
+expectedRendered: |
+  TaxName: tax1
+  RateType: type1 type2
+  TaxName: tax2
+  RateType: type1
+
+---
+name: FilterByValue Usage
+description: |
+  Demonstrate how to use FilterByValue
+  It can take a merge field or a variable as first argument and if the value contains whitespace, it needs to be url-encoded.
+template: |
+  Items with possitive amount: {{Invoice.InvoiceItems|FilterByValue(ChargeAmount,GT,0)|Size}}
+  Items in 2020-12: {{Invoice.InvoiceItems|FilterByValue(ServiceStartDate|Substr(0,7),EQ,"2020-12")|Size}}
+  Recurring Items: {{Invoice.InvoiceItems|FilterByValue(RatePlanCharge.ChargeType,EQ,'Recurring')|Size}}
+  Filter By Value with whitespace: {{Invoice.InvoiceItems|FilterByValue(RatePlanCharge.ChargeModel,EQ,'Discount-Fixed%20Amount')|Size}}
+  Items with null description: {{Invoice.InvoiceItems|FilterByValue(Description,IS_NULL)|Size}}
+  Items with not null description: {{Invoice.InvoiceItems|FilterByValue(Description,NOT_NULL)|Size}}
+  Items with not-blank description: {{Invoice.InvoiceItems|FilterByValue(Description,NE,"")|Size}}
+  Total items by description: {{#Invoice}}{{#Wp_Eval}}{{InvoiceItems|FilterByValue(Description,NE,"")|Size}} + {{InvoiceItems|FilterByValue(Description,EQ,"")|Size}}{{/Wp_Eval}}{{/Invoice}}
+  {{#Invoice.InvoiceItems}}
+    {{Cmd_Assign(VarAmount,ChargeAmount)}}
+  {{/Invoice.InvoiceItems}}
+  Total of possitive items by variable: {{Invoice.InvoiceItems|FilterByValue(VarAmount,GT,0)|Sum(VarAmount)}}
+
+dataFile: data-driven/nested-table/nested-table.json
+expectedRendered: |
+  Items with possitive amount: 7
+  Items in 2020-12: 3
+  Recurring Items: 21
+  Filter By Value with whitespace: 7
+  Items with null description: 19
+  Items with not null description: 2
+  Items with not-blank description: 20
+  Total items by description: 21
+  Total of possitive items by variable: 211.0
+
+---
+name: Fn_Add Usage
+description: |
+  Demonstrate how to use Fn_Add
+template: |
+  {{#Invoice}}
+  {{#InvoiceItems|First(2)}}
+  {{Fn_Add(ChargeAmount,TaxAmount)}}
+  {{/InvoiceItems|First(2)}}
+  {{/Invoice}}
+
+dataFile: data-driven/nested-table/multi-groups.json
+expectedRendered: |
+  28.0
+  30.0
+
+---
+name: Fn_Calc Usage - Numeric Fields
+description: |
+  Demonstrate how to use Fn_Calc
+template: |
+  {{#Invoice}}
+  {{#InvoiceItems|First(1)}}
+  Total: {{Fn_Calc(ChargeAmount,Add,TaxAmount)}}
+  WithoutTax: {{Fn_Calc(ChargeAmount,Subtract,TaxAmount)}}
+  Price: {{Fn_Calc(UnitPrice,Multiply,Quantity)}}
+  PerUnitAmount: {{Fn_Calc(ChargeAmount,Divide,Quantity)}}
+  {{/InvoiceItems|First(1)}}
+  {{/Invoice}}
+
+dataFile: data-driven/nested-table/multi-groups.json
+expectedRendered: |
+  Total: 28
+  WithoutTax: 26
+  Price: 27
+  PerUnitAmount: 9
+
+---
+name: Fn_Calc Usage - Boolean Fields
+description: |
+  Demonstrate how to use Fn_Calc for boolean fields
+template: |
+  {{#Invoice}}
+    {{#Fn_Calc(Status|EqualToVal(Posted),And,Account.AutoPay)}}
+      AutoPay and Posted
+    {{/Fn_Calc(Status|EqualToVal(Posted),And,Account.AutoPay)}}
+  {{/Invoice}}
+data: |
+  {
+        "Invoice": {
+          "Id": "2c92c8fc7bdd0f5a017bdf7d7c2630a7",
+          "Status": "Posted",
+          "Account": {
+            "Id": "account_id",
+            "AutoPay": true
+          }
+        }
+  }
+expectedRendered: |
+  AutoPay and Posted
+
+---
+name: Round Usage
+description: |
+  Demonstrate how to use Round
+template: |
+  {{#Invoice}}
+  {{Amount|Round(3)}}
+  {{Balance|Round(3,HALF_DOWN)}}
+  {{Amount|Round(2,UP)|Localise(en_US)}}
+  {{/Invoice}}
+data: |
+  {
+        "Invoice": {
+          "Id": "2c92c8fc7bdd0f5a017bdf7d7c2630a7",
+          "Amount": 123456.1235,
+          "Balance": 200.1235
+        }
+  }
+expectedRendered: |
+  123456.124
+  200.123
+  123,456.13
+
+---
+name: Map Usage
+description: |
+  Demonstrate how to use Map
+template: |
+  {{#Invoice}}
+  {{#InvoiceItems|First(2)|Map(RatePlanCharge)}}
+    {{RatePlan.Name}}
+  {{/InvoiceItems|First(2)|Map(RatePlanCharge)}}
+  {{/Invoice}}
+
+dataFile: data-driven/nested-table/multi-groups.json
+expectedRendered: |
+  Main Product
+  Main Product
+
+---
+name: Symbol Usage
+description: |
+  Demonstrate how to use Symbol
+template: |
+  No Rounding: {{Invoice.Account.Currency|Symbol}}{{Invoice.Amount|Localise(en_US)}}
+  With Rounding: {{Invoice.Account.Currency|Symbol}}{{Invoice.Amount|Round(4)|Localise(en_US)}}
+  With Flooring: {{Invoice.Account.Currency|Symbol}}{{Invoice.Amount|Round(0)|Localise(en_US)}}
+  With Padding: {{Invoice.Account.Currency|Symbol}}{{Invoice.Amount|Round(10)|Localise(en_US)}}
+data: |
+  {
+        "Invoice": {
+          "Id": "2c92c8fc7bdd0f5a017bdf7d7c2630a7",
+          "Amount": 123456.12345,
+          "Account": {
+            "Id": "account_id",
+            "Currency": "USD"
+          }
+        }
+  }
+expectedRendered: |
+  No Rounding: $123,456.12345
+  With Rounding: $123,456.1235
+  With Flooring: $123,456
+  With Padding: $123,456.1234500000
+
+---
+name: Wp_Eval Usage
+description: |
+  Demonstrate how to use Wp_Eval to evaluate an expression.
+template: |
+  {{#Invoice}}
+    {{! because it takes no argument, repetitive eval fields ends up with same keys }}
+    {{#Wp_Eval}}{{Account.AutoPay}} ? "{{Account.DefaultPaymentMethod.CreditCardMaskNumber}}" : "No Credit Card"{{/Wp_Eval}}
+    Invoice Balance:{{#Wp_Eval}}
+      // comments in expression, test multi-lines expression
+      {{! comments in mustache }}
+      {{Balance}} == 0 ? "Invoice Paid" +
+      " Second line.": "{{Balance}}" +
+      "{{Account.Currency}}"
+    {{/Wp_Eval}}
+    {{#Wp_Eval}}
+      // Test block, the following is not supported
+      // and empty expression returns blank string
+      // true ? { return 1 + 1;} : 0
+    {{/Wp_Eval}}
+    {{#Wp_Eval}}
+      // not allowed to call java
+      // java.time.LocalDate.now().toString()
+    {{/Wp_Eval}}
+    {{#Wp_Eval}}
+      // run in strict mode, null throw exception.
+      // 2 + 10 + null + 2
+      // 2 + 10 +  + 2
+    {{/Wp_Eval}}
+    {{#Wp_Eval}}
+      // text should be enclosed by quotes.
+      // Note: there is no newline added.
+      "{{Account.Currency}} "
+    {{/Wp_Eval}}
+    {{#Wp_Eval}}
+      // unknown fields should not work
+      "{{! Account.Currency1}}"
+    {{/Wp_Eval}}
+    Total WithoutTax:{{Account.Currency|Symbol}}{{#Wp_Eval}}{{Amount}} - {{TaxAmount}}|Round(3)|Localise{{/Wp_Eval}}
+    {{/Invoice}}
+  Unpaid Amount: {{#Wp_Eval}} {{Invoice.Amount}} - {{Invoice.Balance}} {{/Wp_Eval}}
+data: |
+  {
+      "Invoice": {
+        "Amount": 5602.86,
+        "Balance": 5602.86,
+        "TaxAmount": 100.00,
+        "Account": {
+          "AutoPay": false,
+          "Currency": "USD",
+          "DefaultPaymentMethod": {
+            "Id": null,
+            "CreditCardMaskNumber": null
+          },
+          "Id": "2c92c8fb7d1325dd017d1d68e4f33d42"
+        },
+        "Id": "2c92c8fc7d1311af017d1d9d3c175b94"
+      }
+  }
+expectedRendered: |
+  No Credit Card
+  Invoice Balance:5602.86USD
+  USD   Total WithoutTax:$5,502.860
+  Unpaid Amount: 0.0
+---
+name: Wp_Eval together with Cmd_Assign
+description: |
+  Demonstrate how to use Cmd_Assign to define a variable and then use it in Wp_Eval.
+template: |
+  {{#default__messageses|FilterByValue(key__c,EQ,"invoice_number")|FilterByValue(locale__c,EQ,zh_CN)|First(1)}}
+  {{! declare a global variable }}
+  {{Cmd_Assign(invoiceNumberLabel,value__c,True)}}
+  {{/default__messageses|FilterByValue(key__c,EQ,"invoice_number")|FilterByValue(locale__c,EQ,zh_CN)|First(1)}}
+
+  {{! variable can be used without any root object}}
+  {{invoiceNumberLabel}}: {{Invoice.InvoiceNumber}}
+
+  {{#Invoice}}
+  {{#Wp_Eval}}"{{invoiceNumberLabel}}"{{/Wp_Eval}}: {{InvoiceNumber}}
+  {{/Invoice}}
+
+  {{Cmd_Assign(VarList,default__messageses|FilterByValue(locale__c,EQ,zh_CN),True)}}
+  {{#Wp_Eval}}VarList[0]['key__c'] + ": " + VarList[0]['value__c']{{/Wp_Eval}}
+data: |
+  {
+      "Invoice": {
+        "InvoiceNumber": "INV00000047",
+        "Id": "2c92c8fc7d1311af017d1d9d3c175b94"
+      },
+      "default__messageses": [
+          {
+              "value__c": "账单编号",
+              "locale__c": "zh_CN",
+              "key__c": "invoice_number",
+              "Id": "ef322e75-403a-402f-912d-f13d2166dcd0"
+          }
+      ]
+  }
+expectedRendered: |
+  账单编号: INV00000047
+  账单编号: INV00000047
+  invoice_number: 账单编号
+
+---
+name: Assign Usage
+description: |
+  Demonstrate how to use Cmd_Assign.
+  Assign command declares a variable.
+  The variable can be a constant value, or a merge field.
+  A local variable is appended to its contextual object, which is only available inside the section scope.
+  A global variable is appended to the root, can be used anywhere.
+template: |
+  {{Cmd_Assign(VarLabel,'InvoiceNumber',True)}}
+  {{Cmd_Assign(VarSymbol,Invoice.Account.Currency|Symbol,True)}}
+  {{#Invoice}}
+  {{Cmd_Assign(VarBalance,Balance)}}
+  {{VarLabel}}: {{InvoiceNumber}}
+  Balance: {{VarSymbol}}{{VarBalance}}
+  {{! Even the overriding Assign is declare below, but it happens at data transformation phase that prior to the data binding time }}
+  Id: {{Account.Id}}
+  {{/Invoice}}
+  {{VarLabel}}
+  {{#Invoice.Account}}
+    {{! override original id}}
+    {{Cmd_Assign(Id,'NewID')}}
+    Id: {{Id}}
+  {{/Invoice.Account}}
+data: |
+  {
+      "Invoice": {
+        "InvoiceNumber": "INV00000033",
+        "Balance": 20,
+        "Account": {
+           "Id": "account_id",
+           "Currency": "USD"
+        }
+      }
+  }
+expectedRendered: |
+  InvoiceNumber: INV00000033
+  Balance: $20
+  Id: NewID
+  InvoiceNumber
+  Id: NewID
+
+---
+name: FilterByRef
+description: |
+  FilterByRef can be used to perform dynamic data lookup.
+template: |
+  {{#default__billingdocuments|FilterByRef(Currency__c,EQ,Invoice.Account.Currency)|First(1)}}
+      {{Cmd_Assign(VarRate,BillingDocumentNumber__c,True)}}
+  {{/default__billingdocuments|FilterByRef(Currency__c,EQ,Invoice.Account.Currency)|First(1)}}
+  DocumentNumber: {{VarRate}}
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "Currency": "USD",
+          "Id": "some id"
+        }
+      },
+      "default__billingdocuments": [
+          {
+              "BillingDocumentNumber__c": "B-000006",
+              "Currency__c": "USD"
+          }
+      ]
+  }
+expectedRendered: |
+  DocumentNumber: B-000006
+
+---
+name: Default
+description: |
+  Default provides default value in case the input is null or blank.
+
+template: |
+  {{#Wp_Eval}}
+    {{Invoice.Balance|Default(0)}} > 100 ? {{Invoice.Balance|Default(0)}} + 200 : {{Invoice.Balance|Default(0)}} + 100
+  {{/Wp_Eval}}
+  {{Cmd_Assign(VarLocale,Invoice.Account.locale__c|Default('en_US'),True)}}
+  {{Invoice.Account.Currency|Default(CNY)}}
+  {{VarLocale}}
+
+data: |
+  {
+      "Invoice": {
+        "Account": {
+          "Currency": "USD",
+          "Id": "some id"
+        }
+      }
+  }
+expectedRendered: |
+  100
+  USD
+  en_US
+
+---
+name: Nth
+description: |
+  Nth returns the n-th item in a list input.
+  It's 1-based indexing.
+  If the index is out of boundary, return null.
+template: |
+  {{! we don't support the following for now since it needs a relative bigger effort}}
+  {{!Invoice.InvoiceItems|Nth(1).ServiceStartDate}}
+  {{#Invoice.InvoiceItems|Nth(1)}}
+  {{ServiceStartDate}}
+  {{/Invoice.InvoiceItems|Nth(1)}}
+  {{#Invoice.InvoiceItems|Nth(-4)}}
+  {{ServiceStartDate}}
+  {{/Invoice.InvoiceItems|Nth(-4)}}
+  {{#Invoice.InvoiceItems|Nth(100)}}
+  {{ServiceStartDate}}
+  {{/Invoice.InvoiceItems|Nth(100)}}
+
+dataFile: data-driven/nested-table/for-table.json
+expectedRendered: |
+  2020-05-01
+  2020-04-01
+
+---
+name: DateAdd
+description: |
+  DateAdd gets a relative date of the input date.
+template: |
+  {{Invoice.InvoiceDate|DateAdd(-5,D)}}
+  {{Invoice.InvoiceDate|DateAdd(1,M)}}
+  {{Invoice.InvoiceDate|DateAdd(-1,Y)}}
+  {{Invoice.InvoiceDate|DateAdd(-1,Y)|DateAdd(-1,M)|DateAdd(-1,D)}}
+
+data: |
+  {
+      "Invoice": {
+        "InvoiceDate": "2021-03-02",
+        "Id": "some_id"
+      }
+  }
+expectedRendered: |
+  2021-02-25
+  2021-04-02
+  2020-03-02
+  2020-02-01
+  
+---
+name: Format
+description: |
+    Demonstrate how to use Format
+template: |
+    {{#default__messageses|FilterByValue(key__c,EQ,"invoice_number")|FilterByValue(locale__c,EQ,zh_CN)|First(1)}}
+    {{! declare a global variable }}
+    {{value__c|Format(dd-MMM-yyyy HH:mm:ss z)}}
+    {{value__c|Format(dd/MMM/yyyy HH:mm:ss a z)}}
+    {{/default__messageses|FilterByValue(key__c,EQ,"invoice_number")|FilterByValue(locale__c,EQ,zh_CN)|First(1)}}
+    {{#Invoice}}
+    {{InvoiceDate|Format(dd.MM.yyyy)}}
+    {{InvoiceDate|Format(MM/dd/yyyy)}}
+    {{InvoiceDate|Format(dd-MMM-yyyy)}}
+    {{DueDate|Format(dd-MMM-yy)}}
+    {{DueDate|Format(dd-MMMM-yyyy)}}
+    {{DueDate|Format(dd.MMMM.yyyy)}}
+    {{CreatedDate|Format(dd-MMM-yyyy HH:mm:ss z)}}
+    {{CreatedDate|Format(dd.MMMM.yyyy HH:mm:ss a z)}}
+    {{CreatedDate|Format(dd.MMMM.yy)}}
+    {{UpdatedDate|Format(yyyy/MM/dd)}}
+    {{UpdatedDate|Format(MMM,dd yyyy)}}
+    {{UpdatedDate|Format(MMM,dd,yyyy)}}
+    {{UpdatedDate|Format(dd'rd' MMM, yyyy)}}
+    {{/Invoice}}
+data: |
+  {
+      "Invoice": {
+        "Id": "2c92c8fc7bdd0f5a017bdf7d7c2630a7",
+        "InvoiceDate": "2021-03-02",
+        "DueDate": "2022-01-01",
+        "CreatedDate": "2021-04-20T16:32:52+10:00",
+        "UpdatedDate": "2020-12-23T01:23:07.893Z"
+      },
+      "default__messageses": [
+          {
+              "value__c": "2020-12-23T01:23:07.893Z",
+              "locale__c": "zh_CN",
+              "key__c": "invoice_number",
+              "Id": "ef322e75-403a-402f-912d-f13d2166dcd0"
+          }
+      ]
+  }
+expectedRendered: |
+  23-Dec-2020 01:23:07 UTC
+  23/Dec/2020 01:23:07 AM UTC
+  02.03.2021
+  03/02/2021
+  02-Mar-2021
+  01-Jan-22
+  01-January-2022
+  01.January.2022
+  20-Apr-2021 06:32:52 UTC
+  20.April.2021 06:32:52 AM UTC
+  20.April.21
+  2020/12/23
+  Dec,23 2020
+  Dec,23,2020
+  23rd Dec, 2020
+
+---
+name: SUM
+description: Use SUM decorator to add numeric text inputs
+template: |
+  {{#Invoice}}
+     InvoiceNumber:{{InvoiceNumber}}
+     {{#Account}}
+        {{Default__AccountBalances|Sum(Balance__c)|Round(2)}}
+     {{/Account}}
+  {{/Invoice}}
+data: |
+  {
+        "Invoice": {
+          "InvoiceNumber": "INV00000033",
+          "Account": {
+            "Name": "Leo Tst",
+            "Default__AccountBalances": [
+                {
+                    "Balance__c": "-100.23",
+                    "Currency__c": "USD"
+                },
+                {
+                    "Balance__c": "125.50",
+                    "Currency__c": "CNY"
+                },
+                {
+                    "Balance__c": "-0.45",
+                    "Currency__c": "CNY"
+                },
+                {
+                    "Balance__c": "0.99",
+                    "Currency__c": "CNY"
+                }
+            ]
+          }
+        }
+    }
+expectedRendered: |
+  InvoiceNumber:INV00000033
+  25.81
+
+---
+name: Skip
+description: |
+  Skips First or Last items of a list
+template: |
+  {{#Invoice.InvoiceItems|Skip(10)}}
+    Service Start Date - {{ServiceStartDate}}
+  {{/Invoice.InvoiceItems|Skip(10)}}
+dataFile: data-driven/nested-table/nested-table.json
+expectedRendered: |
+  Service Start Date - 2020-11-01
+  Service Start Date - 2020-11-01
+  Service Start Date - 2020-10-01
+  Service Start Date - 2020-10-01
+  Service Start Date - 2020-10-01
+  Service Start Date - 2020-08-01
+  Service Start Date - 2020-08-01
+  Service Start Date - 2020-08-01
+  Service Start Date - 2020-09-01
+  Service Start Date - 2020-09-01
+  Service Start Date - 2020-09-01

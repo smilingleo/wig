@@ -1,0 +1,181 @@
+---
+name: Custom objects associated with a standard object
+description: |
+  Demostrate how to fetch custom objects associated with a standard object.
+  In this example, the custom object is `AccountBalance` which has a relation field to `Account`,
+  so, we can get the custom object data by data path of `Account.Default__AccountBalances`.
+template: |
+  {{#Invoice}}
+     InvoiceNumber:{{InvoiceNumber}}
+     {{#Account}}
+        AccountName:{{Name}}
+        {{#Default__AccountBalances}}
+        {{Currency__c}} {{Balance__c}}
+        {{/Default__AccountBalances}}
+     {{/Account}}
+  {{/Invoice}}
+data: |
+  {
+    "Invoice": {
+      "InvoiceNumber": "INV00000033",
+      "Account": {
+        "Name": "Leo Tst",
+        "Default__AccountBalances": [
+          {
+              "Balance__c": 100,
+              "Currency__c": "USD"
+          },
+          {
+              "Balance__c": 500,
+              "Currency__c": "CNY"
+          }
+        ]
+      }
+    }
+  }
+expectedRendered: |
+  InvoiceNumber:INV00000033
+  AccountName:Leo Tst
+  USD 100
+  CNY 500
+ignoreWhitespace: true
+
+---
+name: Custom object can be used as root object
+description: Custom object can be used at root object
+template: |
+  {{#Invoice}}
+     {{InvoiceNumber}} - {{Balance}}
+  {{/Invoice}}
+  {{#default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)}}
+      {{BillingDocumentNumber__c}} - {{Currency__c}} - {{Balance__c}}
+  {{/default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)}}
+dataFile: data-driven/custom-object/with-custom-object.json
+expectedRendered: |
+  INV00000029 - 193.45
+  B-000006 - USD - 150
+  B-000007 - USD - 150
+  B-000011 - USD - 150
+  B-000007 - USD - 150
+ignoreWhitespace: true
+
+---
+name: Custom object can be used within other object context
+description: |
+  To demostrate the merge field structure in the template doesn't have to be the same as business object graph schema.
+template: |
+  {{#Invoice}}
+      {{InvoiceNumber}} - {{Balance}}
+      {{#default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)}}
+          {{BillingDocumentNumber__c}} - {{Currency__c}} - {{Balance__c}}
+      {{/default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)}}
+  {{/Invoice}}
+dataFile: data-driven/custom-object/with-custom-object.json
+expectedRendered: |
+  INV00000029 - 193.45
+  B-000006 - USD - 150
+  B-000007 - USD - 150
+  B-000011 - USD - 150
+  B-000007 - USD - 150
+ignoreWhitespace: true
+
+---
+name: Users can refer a list of custom object records.
+description: case 2-4, see https://zuora.atlassian.net/browse/INV-8884
+template: |
+  {{#Invoice}}
+    {{Account.Name}} - {{InvoiceNumber}}
+  {{/Invoice}}
+  {{#default__messageses|FilterByValue(locale__c,EQ,'zh_CN')}}
+     {{key__c}}={{value__c}}
+  {{/default__messageses|FilterByValue(locale__c,EQ,'zh_CN')}}
+data: |
+  {
+    "Invoice": {
+      "Account": {
+        "Name": "Leo Liu"
+      },
+      "InvoiceNumber": "INV00000029"
+    },
+    "default__messageses": [
+      {
+          "value__c": "Invoice Number",
+          "locale__c": "en_US",
+          "key__c": "invoice_number"
+      },
+      {
+          "value__c": "账单编号",
+          "locale__c": "zh_CN",
+          "key__c": "invoice_number"
+      },
+      {
+          "value__c": "账号",
+          "locale__c": "zh_CN",
+          "key__c": "account_name"
+      }
+    ]
+  }
+expectedRendered: |
+  Leo Liu - INV00000029
+  invoice_number=账单编号
+  account_name=账号
+ignoreWhitespace: true
+
+---
+name: Custom object can be used within Wp_Eval
+description: |
+  Use Custom object in an expression
+template: |
+  {{#Invoice}}
+      {{InvoiceNumber}} - {{Balance}}
+      {{#Wp_Eval}}
+      {{Balance}} + {{#default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)|First(1)}}{{Balance__c}}{{/default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)|First(1)}}
+      {{/Wp_Eval}}
+  {{/Invoice}}
+dataFile: data-driven/custom-object/with-custom-object.json
+expectedRendered: |
+  INV00000029 - 193.45
+  343.45
+
+---
+name: Custom object as root and nested object
+description: |
+  Multiple custom objects are used in a template
+template: |
+  {{#default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)|FilterByValue(CreatedDate,GE,2020-12-18T05:18:31)}}
+      {{BillingDocumentNumber__c}} - {{Currency__c}} - {{Balance__c}}
+      {{#Invoice.Account}}
+          {{Balance}}
+          {{#default__messageses}}
+          {{locale__c}}
+          {{/default__messageses}}
+      {{/Invoice.Account}}
+  {{/default__billingdocuments|FilterByValue(CustomerName__c,EQ,Joe)|FilterByValue(CreatedDate,GE,2020-12-18T05:18:31)}}
+data: |
+  {
+    "Invoice": {
+      "Account": {
+        "Balance": 10.0,
+        "Id": "2c92c8fc79652bd2017968434cc92c3e"
+      },
+      "Id": "2c92c8fc79652bd2017968434cc92c3d"
+    },
+    "default__billingdocuments": [
+      {
+          "BillingDocumentNumber__c": "B-000006",
+          "Currency__c": "USD",
+          "Balance__c": 150,
+          "CreatedDate": "2020-12-18T05:18:31",
+          "CustomerName__c": "Joe"
+      }
+    ],
+    "default__messageses": [
+      {
+          "locale__c": "en_US"
+      }
+    ]
+  }
+expectedRendered: |
+  B-000006 - USD - 150
+  10.0
+  en_US

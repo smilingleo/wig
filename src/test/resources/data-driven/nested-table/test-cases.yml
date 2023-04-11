@@ -1,0 +1,546 @@
+---
+name: Two layer nested table with one group by
+template: |
+  {{#Invoice}}
+    {{#InvoiceItems|GroupBy(ChargeName,ServiceStartDate|Substr(0,6))}}
+      {{ChargeName}}
+      {{#_Group}}
+        {{ServiceStartDate|Substr(0,6)}}
+        {{#_Group}}
+          {{ServiceStartDate}} - {{ChargeAmount}} - {{Id}}
+        {{/_Group}}
+      {{/_Group}}
+    {{/InvoiceItems|GroupBy(ChargeName,ServiceStartDate|Substr(0,6))}}
+  {{/Invoice}}
+dataFile: data-driven/nested-table/nested-table.json
+expectedRendered: |
+  Discount Charge
+    2020-1
+      2020-12-01 - -1 - 2c92c8fc79652bd2017968434cea2c52
+      2020-11-01 - -1 - 2c92c8fc79652bd2017968434ce62c49
+      2020-10-01 - -1 - 2c92c8fc79652bd2017968434cda2c46
+    2020-0
+      2020-06-01 - -1 - 2c92c8fc79652bd2017968434ce92c4f
+      2020-07-01 - -1 - 2c92c8fc79652bd2017968434ce82c4c
+      2020-08-01 - -1 - 2c92c8fc79652bd2017968434cd82c43
+      2020-09-01 - -1 - 2c92c8fc79652bd2017968434cd72c40
+  Loyalty Discount
+    2020-1
+      2020-12-01 - -1.35 - 2c92c8fc79652bd2017968434cea2c51
+      2020-11-01 - -1.6 - 2c92c8fc79652bd2017968434ce52c48
+      2020-10-01 - -1.6 - 2c92c8fc79652bd2017968434cd92c45
+    2020-0
+      2020-06-01 - -1.5 - 2c92c8fc79652bd2017968434ce92c4e
+      2020-07-01 - -1.5 - 2c92c8fc79652bd2017968434ce72c4b
+      2020-08-01 - -1.5 - 2c92c8fc79652bd2017968434cd82c42
+      2020-09-01 - -1.5 - 2c92c8fc79652bd2017968434cd62c3f
+  Service Charge
+    2020-1
+      2020-12-01 - 27 - 2c92c8fc79652bd2017968434cea2c50
+      2020-11-01 - 32 - 2c92c8fc79652bd2017968434cdb2c47
+      2020-10-01 - 32 - 2c92c8fc79652bd2017968434cd92c44
+    2020-0
+      2020-06-01 - 30 - 2c92c8fc79652bd2017968434ce82c4d
+      2020-07-01 - 30 - 2c92c8fc79652bd2017968434ce72c4a
+      2020-08-01 - 30 - 2c92c8fc79652bd2017968434cd72c41
+      2020-09-01 - 30 - 2c92c8fc79652bd2017968434cd62c3e
+ignoreWhitespace: true
+
+---
+name: Two layer nested table with two group by
+template: |
+  {{#Invoice}}
+    {{#InvoiceItems|GroupBy(ChargeName)}}
+      {{ChargeName}}
+      {{#_Group|GroupBy(ServiceStartDate|Substr(0,6))}}
+        {{ServiceStartDate|Substr(0,6)}}
+        {{#_Group}}
+          {{ServiceStartDate}} - {{ChargeAmount}} - {{Id}}
+        {{/_Group}}
+      {{/_Group|GroupBy(ServiceStartDate|Substr(0,6))}}
+    {{/InvoiceItems|GroupBy(ChargeName)}}
+  {{/Invoice}}
+dataFile: data-driven/nested-table/nested-table.json
+expectedRendered: |
+  Discount Charge
+    2020-1
+      2020-12-01 - -1 - 2c92c8fc79652bd2017968434cea2c52
+      2020-11-01 - -1 - 2c92c8fc79652bd2017968434ce62c49
+      2020-10-01 - -1 - 2c92c8fc79652bd2017968434cda2c46
+    2020-0
+      2020-06-01 - -1 - 2c92c8fc79652bd2017968434ce92c4f
+      2020-07-01 - -1 - 2c92c8fc79652bd2017968434ce82c4c
+      2020-08-01 - -1 - 2c92c8fc79652bd2017968434cd82c43
+      2020-09-01 - -1 - 2c92c8fc79652bd2017968434cd72c40
+  Loyalty Discount
+    2020-1
+      2020-12-01 - -1.35 - 2c92c8fc79652bd2017968434cea2c51
+      2020-11-01 - -1.6 - 2c92c8fc79652bd2017968434ce52c48
+      2020-10-01 - -1.6 - 2c92c8fc79652bd2017968434cd92c45
+    2020-0
+      2020-06-01 - -1.5 - 2c92c8fc79652bd2017968434ce92c4e
+      2020-07-01 - -1.5 - 2c92c8fc79652bd2017968434ce72c4b
+      2020-08-01 - -1.5 - 2c92c8fc79652bd2017968434cd82c42
+      2020-09-01 - -1.5 - 2c92c8fc79652bd2017968434cd62c3f
+  Service Charge
+    2020-1
+      2020-12-01 - 27 - 2c92c8fc79652bd2017968434cea2c50
+      2020-11-01 - 32 - 2c92c8fc79652bd2017968434cdb2c47
+      2020-10-01 - 32 - 2c92c8fc79652bd2017968434cd92c44
+    2020-0
+      2020-06-01 - 30 - 2c92c8fc79652bd2017968434ce82c4d
+      2020-07-01 - 30 - 2c92c8fc79652bd2017968434ce72c4a
+      2020-08-01 - 30 - 2c92c8fc79652bd2017968434cd72c41
+      2020-09-01 - 30 - 2c92c8fc79652bd2017968434cd62c3e
+ignoreWhitespace: true
+
+---
+name: For Invoice Item Table in Unlayer
+template: |
+  {{#Invoice}}
+  {{Account.Name}} {{Account.AccountNumber}}
+  {{InvoiceNumber}} {{Balance}}
+  {{^InvoiceItems|SortBy(ChargeName,ASC)|IsEmpty}}
+    {{#InvoiceItems|SortBy(ChargeName,ASC)}}
+       {{ChargeName}} - {{ChargeAmount}} - {{ServiceStartDate}}
+    {{/InvoiceItems|SortBy(ChargeName,ASC)}}
+  {{/InvoiceItems|SortBy(ChargeName,ASC)|IsEmpty}}
+  {{/Invoice}}
+dataFile: data-driven/nested-table/for-table.json
+expectedRendered: |
+  Leo Tst A00000060
+  INV00000023 0
+  Billing - 1234 - 2020-03-01
+  Billing - 1234 - 2020-08-01
+  Billing - 1234 - 2020-12-01
+  Billing - 1234 - 2020-07-01
+  Billing - 1234 - 2020-06-01
+  Billing - 1234 - 2020-04-01
+  Billing - 1234 - 2020-11-01
+  Billing - 1234 - 2020-09-01
+  Billing - 1234 - 2020-01-01
+  Billing - 1234 - 2020-05-01
+  Billing - 1234 - 2020-10-01
+  Billing - 1234 - 2020-02-01
+  One-Time Charge 0 - 10 - 2020-01-01
+  Usage Charge - 5 - 2020-05-01
+  Usage Charge - 3 - 2020-02-01
+  Usage Charge - 7 - 2020-07-01
+  Usage Charge - 4 - 2020-03-01
+  Usage Charge - 2 - 2020-01-01
+  Usage Charge - 0 - 2020-08-01
+  Usage Charge - 0 - 2020-10-01
+  Usage Charge - 0 - 2021-03-01
+  Usage Charge - 0 - 2020-09-01
+  Usage Charge - 0 - 2020-06-01
+  Usage Charge - 0 - 2021-01-01
+  Usage Charge - 0 - 2020-04-01
+  Usage Charge - 0 - 2021-02-01
+  Usage Charge - 0 - 2020-12-01
+  Usage Charge - 0 - 2020-11-01
+
+---
+name: For Invoice Item Table in Unlayer with GroupBy
+template: |
+  {{#Invoice}}
+  {{Account.Name}} {{Account.AccountNumber}}
+  {{InvoiceNumber}} {{Balance}}
+  {{/Invoice}}
+  {{#Invoice}}
+  {{^InvoiceItems|SortBy(ChargeName,ASC)|GroupBy(ChargeName)|IsEmpty}}
+    {{#InvoiceItems|SortBy(ChargeName,ASC)|GroupBy(ChargeName)}}
+       {{ChargeName}} - {{_Group|Sum(ChargeAmount)}}
+       {{#_Group|SortBy(ServiceStartDate,ASC)|FilterByValue(ChargeAmount,GT,0)}}
+       {{ChargeAmount}} - {{ServiceStartDate}}
+       {{/_Group|SortBy(ServiceStartDate,ASC)|FilterByValue(ChargeAmount,GT,0)}}
+    {{/InvoiceItems|SortBy(ChargeName,ASC)|GroupBy(ChargeName)}}
+  {{/InvoiceItems|SortBy(ChargeName,ASC)|GroupBy(ChargeName)|IsEmpty}}
+  {{/Invoice}}
+dataFile: data-driven/nested-table/for-table.json
+expectedRendered: |
+  Leo Tst A00000060
+  INV00000023 0
+  Billing - 14808.0
+    1234 - 2020-01-01
+    1234 - 2020-02-01
+    1234 - 2020-03-01
+    1234 - 2020-04-01
+    1234 - 2020-05-01
+    1234 - 2020-06-01
+    1234 - 2020-07-01
+    1234 - 2020-08-01
+    1234 - 2020-09-01
+    1234 - 2020-10-01
+    1234 - 2020-11-01
+    1234 - 2020-12-01
+  One-Time Charge 0 - 10.0
+    10 - 2020-01-01
+  Usage Charge - 21.0
+    2 - 2020-01-01
+    3 - 2020-02-01
+    4 - 2020-03-01
+    5 - 2020-05-01
+    7 - 2020-07-01
+
+---
+name: InvoiceItems Table with root object name
+description: |
+  The difference between this and above test cases is that previous case wrap all merge fields with an Invoice section
+  field, but this one is with root object name.
+template: |
+  {{Invoice.Account.Name}} {{Invoice.Account.AccountNumber}}
+  {{Invoice.InvoiceNumber}} {{Invoice.Balance}}
+  {{^Invoice.InvoiceItems|FilterByValue(ChargeAmount,GT,0)|SortBy(ServiceStartDate,ASC)|GroupBy(ChargeName)|IsEmpty}}
+    {{#Invoice.InvoiceItems|FilterByValue(ChargeAmount,GT,0)|SortBy(ServiceStartDate,ASC)|GroupBy(ChargeName)}}
+       {{ChargeName}}
+       {{#_Group}}
+        {{ChargeAmount}} - {{ServiceStartDate}}
+       {{/_Group}}
+    {{/Invoice.InvoiceItems|FilterByValue(ChargeAmount,GT,0)|SortBy(ServiceStartDate,ASC)|GroupBy(ChargeName)}}
+  {{/Invoice.InvoiceItems|FilterByValue(ChargeAmount,GT,0)|SortBy(ServiceStartDate,ASC)|GroupBy(ChargeName)|IsEmpty}}
+dataFile: data-driven/nested-table/for-table.json
+expectedRendered: |
+  Leo Tst A00000060
+  INV00000023 0
+  Usage Charge
+    2 - 2020-01-01
+    3 - 2020-02-01
+    4 - 2020-03-01
+    5 - 2020-05-01
+    7 - 2020-07-01
+  Billing
+    1234 - 2020-01-01
+    1234 - 2020-02-01
+    1234 - 2020-03-01
+    1234 - 2020-04-01
+    1234 - 2020-05-01
+    1234 - 2020-06-01
+    1234 - 2020-07-01
+    1234 - 2020-08-01
+    1234 - 2020-09-01
+    1234 - 2020-10-01
+    1234 - 2020-11-01
+    1234 - 2020-12-01
+  One-Time Charge 0
+    10 - 2020-01-01
+
+---
+name: Multiple levels of nested table
+description: |
+  The goal is to generate a single table with `rowspan` and `colspan`.
+  Save the output HTML into a file and open in a browser to see the effect.
+  This test case deliberately uses `Quantity` as third group by,
+  to test in case the value of 2nd group by values are different but the 3rd ones are the same,
+  the `rowspan` of the `td` element should be set correctly.
+  The basic idea is to only render the `<td rowspan='xxx'>` for the first time,
+  compare the group by key(s) with a variable which keeps the last value, if they equal,
+  don't show the `<td rowspan='xx'>`.
+  Note: Each group by column has to concat with previous group bys.
+
+template: |
+  <html><head><style> table tr td { border: 1px solid; } table { border-collapse: collapse; } </style></head><body>
+  InvoiceNumber: {{Invoice.InvoiceNumber}}
+  InvoiceBalance: {{Invoice.Balance}}
+  {{#Invoice}}
+     <table>
+    {{#InvoiceItems|GroupBy(RatePlanCharge.RatePlan.Name,ChargeName,Quantity)}}{{Cmd_Assign(BySrpName,_Group)}}
+    {{#BySrpName}}{{Cmd_Assign(ByChargeName,_Group)}}
+    {{#ByChargeName}}{{Cmd_Assign(ByQuantity,_Group)}}
+    {{#ByQuantity}}
+       <tr>
+      {{^RatePlanCharge.RatePlan.Name|EqualToVar(BySrpNameKey)}}
+      <td rowspan="{{BySrpName|FlatMap(_Group)|FlatMap(_Group)|Size}}">{{RatePlanCharge.RatePlan.Name}}</td>
+      {{/RatePlanCharge.RatePlan.Name|EqualToVar(BySrpNameKey)}}
+
+      {{^.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,'_')|EqualToVar(ByChargeNameKey)}}
+        <td rowspan="{{ByChargeName|FlatMap(_Group)|Size}}">{{ChargeName}}</td>
+      {{/.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,'_')|EqualToVar(ByChargeNameKey)}}
+
+      {{^.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,Quantity,'_')|EqualToVar(ByQuantityKey)}}
+      <td rowspan="{{ByQuantity|Size}}">{{Quantity}}</td>
+      {{/.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,Quantity,'_')|EqualToVar(ByQuantityKey)}}
+
+      <td>{{ChargeAmount}}</td>
+      <td>{{ServiceStartDate}}</td>
+      </tr>
+    {{/ByQuantity}}
+    {{/ByChargeName}}
+    {{/BySrpName}}
+    {{/InvoiceItems|GroupBy(RatePlanCharge.RatePlan.Name,ChargeName,Quantity)}}
+    </table>
+  {{/Invoice}}
+  </body></html>
+dataFile: data-driven/nested-table/multi-groups.json
+expectedRendered: |
+  <html><head><style> table tr td { border: 1px solid; } table { border-collapse: collapse; } </style></head><body>
+  InvoiceNumber:
+  InvoiceBalance:
+  <table>
+  <tr>
+  <td rowspan="7">Main Product</td>
+  <td rowspan="7">Service Charge</td>
+  <td rowspan="5">3</td>
+  <td>27</td>
+  <td>2020-12-01</td>
+  </tr>
+  <tr>
+  <td>30</td>
+  <td>2020-06-01</td>
+  </tr>
+  <tr>
+  <td>30</td>
+  <td>2020-07-01</td>
+  </tr>
+  <tr>
+  <td>30</td>
+  <td>2020-08-01</td>
+  </tr>
+  <tr>
+  <td>30</td>
+  <td>2020-09-01</td>
+  </tr>
+  <tr>
+  <td rowspan="2">4</td>
+  <td>32</td>
+  <td>2020-11-01</td>
+  </tr>
+  <tr>
+  <td>32</td>
+  <td>2020-10-01</td>
+  </tr>
+  <tr>
+  <td rowspan="14">Discount Plan</td>
+  <td rowspan="7">Discount Charge</td>
+  <td rowspan="7">1</td>
+  <td>-1</td>
+  <td>2020-12-01</td>
+  </tr>
+  <tr>
+  <td>-1</td>
+  <td>2020-06-01</td>
+  </tr>
+  <tr>
+  <td>-1</td>
+  <td>2020-07-01</td>
+  </tr>
+  <tr>
+  <td>-1</td>
+  <td>2020-11-01</td>
+  </tr>
+  <tr>
+  <td>-1</td>
+  <td>2020-10-01</td>
+  </tr>
+  <tr>
+  <td>-1</td>
+  <td>2020-08-01</td>
+  </tr>
+  <tr>
+  <td>-1</td>
+  <td>2020-09-01</td>
+  </tr>
+  <tr>
+  <td rowspan="7">Loyalty Discount</td>
+  <td rowspan="7">1</td>
+  <td>-1.35</td>
+  <td>2020-12-01</td>
+  </tr>
+  <tr>
+  <td>-1.5</td>
+  <td>2020-06-01</td>
+  </tr>
+  <tr>
+  <td>-1.5</td>
+  <td>2020-07-01</td>
+  </tr>
+  <tr>
+  <td>-1.6</td>
+  <td>2020-11-01</td>
+  </tr>
+  <tr>
+  <td>-1.6</td>
+  <td>2020-10-01</td>
+  </tr>
+  <tr>
+  <td>-1.5</td>
+  <td>2020-08-01</td>
+  </tr>
+  <tr>
+  <td>-1.5</td>
+  <td>2020-09-01</td>
+  </tr>
+  </table>
+  </body></html>
+
+---
+name: Separated nested tables
+description: |
+  The goal is to generate multiple tables each represents a sub-group,
+  and also to add sub-total section for each sub-group. Given two rate plans,
+  we want to show a table for each rate plan, like:
+
+  RatePlan1
+  row1 ...
+  row2 ...
+  subtotal ...
+
+  RatePlan2
+  row1 ...
+  row2 ...
+  subtotal ...
+
+  copy the `expectedRendered` content and save it as a html file to see how it looks like.
+template: |
+  <html><head><style> table tr td { border: 1px solid; } table { border-collapse: collapse; } </style></head><body>
+  InvoiceNumber: {{Invoice.InvoiceNumber}}
+  InvoiceBalance: {{Invoice.Balance}}
+  {{#Invoice}}
+    {{#InvoiceItems|GroupBy(RatePlanCharge.RatePlan.Name,ChargeName,Quantity)}}{{Cmd_Assign(BySrpName,_Group)}}
+
+    {{! the repeated items start here, we want the rate plan name as table title, so it needs to be before table tag. }}
+
+    <h3>{{RatePlanCharge.RatePlan.Name}}</h3>
+    <table>  {{! table doesn't need to be repeated for each rate plan, so it's outside of BySrpName }}
+    {{#BySrpName}}{{Cmd_Assign(ByChargeName,_Group)}}
+      {{#ByChargeName}}{{Cmd_Assign(ByQuantity,_Group)}}
+      {{#ByQuantity}}
+         <tr>
+        {{^.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,'_')|EqualToVar(ByChargeNameKey)}}
+          <td rowspan="{{ByChargeName|FlatMap(_Group)|Size}}">{{ChargeName}}</td>
+        {{/.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,'_')|EqualToVar(ByChargeNameKey)}}
+
+        {{^.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,Quantity,'_')|EqualToVar(ByQuantityKey)}}
+        <td rowspan="{{ByQuantity|Size}}">{{Quantity}}</td>
+        {{/.|Concat(RatePlanCharge.RatePlan.Name,ChargeName,Quantity,'_')|EqualToVar(ByQuantityKey)}}
+
+        <td>{{ChargeAmount}}</td>
+        <td>{{ServiceStartDate}}</td>
+        </tr>
+      {{/ByQuantity}}
+      {{/ByChargeName}}
+    {{/BySrpName}}
+      <tr>
+        <td>Subtotal:</td>
+        <td>{{BySrpName|FlatMap(_Group)|FlatMap(_Group)|Sum(Quantity)|Round(0)}}</td>
+        <td>{{BySrpName|FlatMap(_Group)|FlatMap(_Group)|Sum(ChargeAmount)|Round(2)}}</td>
+        <td></td>
+      </tr>
+    </table>
+    {{/InvoiceItems|GroupBy(RatePlanCharge.RatePlan.Name,ChargeName,Quantity)}}
+  {{/Invoice}}
+  </body></html>
+dataFile: data-driven/nested-table/multi-groups.json
+expectedRendered: |
+  <html><head><style> table tr td { border: 1px solid; } table { border-collapse: collapse; } </style></head><body>
+      InvoiceNumber:
+      InvoiceBalance:
+      <h3>Main Product</h3>
+      <table>
+      <tr>
+      <td rowspan="7">Service Charge</td>
+      <td rowspan="5">3</td>
+      <td>27</td>
+      <td>2020-12-01</td>
+      </tr>
+      <tr>
+      <td>30</td>
+      <td>2020-06-01</td>
+      </tr>
+      <tr>
+      <td>30</td>
+      <td>2020-07-01</td>
+      </tr>
+      <tr>
+      <td>30</td>
+      <td>2020-08-01</td>
+      </tr>
+      <tr>
+      <td>30</td>
+      <td>2020-09-01</td>
+      </tr>
+      <tr>
+      <td rowspan="2">4</td>
+      <td>32</td>
+      <td>2020-11-01</td>
+      </tr>
+      <tr>
+      <td>32</td>
+      <td>2020-10-01</td>
+      </tr>
+      <tr>
+      <td>Subtotal:</td>
+      <td>23</td>
+      <td>211.00</td>
+      <td></td>
+      </tr>
+      </table>
+      <h3>Discount Plan</h3>
+      <table>
+      <tr>
+      <td rowspan="7">Discount Charge</td>
+      <td rowspan="7">1</td>
+      <td>-1</td>
+      <td>2020-12-01</td>
+      </tr>
+      <tr>
+      <td>-1</td>
+      <td>2020-06-01</td>
+      </tr>
+      <tr>
+      <td>-1</td>
+      <td>2020-07-01</td>
+      </tr>
+      <tr>
+      <td>-1</td>
+      <td>2020-11-01</td>
+      </tr>
+      <tr>
+      <td>-1</td>
+      <td>2020-10-01</td>
+      </tr>
+      <tr>
+      <td>-1</td>
+      <td>2020-08-01</td>
+      </tr>
+      <tr>
+      <td>-1</td>
+      <td>2020-09-01</td>
+      </tr>
+      <tr>
+      <td rowspan="7">Loyalty Discount</td>
+      <td rowspan="7">1</td>
+      <td>-1.35</td>
+      <td>2020-12-01</td>
+      </tr>
+      <tr>
+      <td>-1.5</td>
+      <td>2020-06-01</td>
+      </tr>
+      <tr>
+      <td>-1.5</td>
+      <td>2020-07-01</td>
+      </tr>
+      <tr>
+      <td>-1.6</td>
+      <td>2020-11-01</td>
+      </tr>
+      <tr>
+      <td>-1.6</td>
+      <td>2020-10-01</td>
+      </tr>
+      <tr>
+      <td>-1.5</td>
+      <td>2020-08-01</td>
+      </tr>
+      <tr>
+      <td>-1.5</td>
+      <td>2020-09-01</td>
+      </tr>
+      <tr>
+      <td>Subtotal:</td>
+      <td>14</td>
+      <td>-17.55</td>
+      <td></td>
+      </tr>
+      </table>
+      </body></html>

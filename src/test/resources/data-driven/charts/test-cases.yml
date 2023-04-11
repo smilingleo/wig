@@ -1,0 +1,18 @@
+---
+name: Previous invoices
+template: |
+  {{#Invoice}}
+  {{Cmd_Assign(MaxAmount,Account.Invoices|Max(Amount))}}
+  {{#Account.Invoices|SortBy(InvoiceDate,ASC)}}
+    {{InvoiceDate}}
+    {{Balance}} / {{MaxAmount}}
+  {{/Account.Invoices|SortBy(InvoiceDate,ASC)}}
+  {{/Invoice}}
+dataFile: data-driven/charts/account-invoices.json
+expectedRendered: |
+  2020-06-01
+  108 / 193.45
+  2020-12-31
+  193.45 / 193.45
+  2021-06-01
+  150 / 193.45

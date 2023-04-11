@@ -1,0 +1,7 @@
+
+{{Cmd_ListToDict(default__messageses|FilterByValue(locale__c,EQ,zh_CN),key__c,value__c,Message)}}
+
+{{#Invoice}}
+    {{Message.account_name}}: {{Account.Name}}
+    {{Message.invoice_number}}: {{InvoiceNumber}}
+{{/Invoice}}
