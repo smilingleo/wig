@@ -15,7 +15,6 @@ public class FunctionParser {
     private static final List<Class<? extends Function>> ALL_FUNCTION_CLASSES = new LinkedList<>();
 
     static {
-        ALL_FUNCTION_CLASSES.add(Add.class);
         ALL_FUNCTION_CLASSES.add(Calc.class);
         ALL_FUNCTION_CLASSES.add(Today.class);
     }

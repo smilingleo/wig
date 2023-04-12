@@ -1,15 +1,16 @@
 ---
-name: Concat Usage
+name: Concat
 description: |
-  Demonstrate how to use Concat decorator.
-  Concat argument can be merge field with decorator, dotted path and variable.
+  Concatenate multiple input strings into one string.
+  `Concat` function takes at least two arguments, the last argument is the separator 
+  that will be used to join the input strings. 
+  Argument can be input field with decorator, dotted data path or variable.
 template: |
   {{#Invoice}}
-  {{Cmd_Assign(VarNumber,InvoiceNumber)}}
-  {{.|Concat(Account.Name,VarNumber,'-')}}
-  {{.|Concat(Account.Name,VarNumber|Substr(0,3),'-')}}
+    {{Cmd_Assign(VarNumber,InvoiceNumber)}}
+    {{.|Concat(Account.Name,VarNumber,'-')}}
+    {{.|Concat(Account.Name,VarNumber|Substr(0,3),'-')}}
   {{/Invoice}}
-
 data: |
   {
     "Invoice": {
@@ -24,9 +25,27 @@ expectedRendered: |
   Leo-INV
 
 ---
-name: EqualToVal Usage
+name: Substr
 description: |
-  Demonstrate how to use EqualToVal decorator
+  Return a substring of the left side input string.
+  `Substr` function takes at most 2 arguments, the first argument is the start index of the substring(0-based), 
+  the second argument is the length of the substring.
+  Argument can be input field with decorator, dotted data path or variable.
+template: |
+  {{Invoice.InvoiceDate|Substr(0,7)}}
+data: |
+    {
+        "Invoice": {
+        "InvoiceDate": "2019-01-01"
+        }
+    }
+expectedRendered: |
+  2019-01
+
+---
+name: EqualToVal
+description: |
+  Compare the left side input with the argument, return boolean value.
 template: |
   {{Invoice.InvoiceNumber|EqualToVal(INV00000033)}}
   {{Invoice.Balance|EqualToVal(1000)}}
@@ -42,14 +61,14 @@ expectedRendered: |
   false
 
 ---
-name: IsBlank Usage
+name: IsBlank
 description: |
-  Demonstrate how to use IsBlank decorator
+  Evaluate if the left side input is blank.
 template: |
   {{#Invoice}}
-  {{^InvoiceNumber|IsBlank}}
-  Invoice Number Not Blank, {{InvoiceNumber}}
-  {{/InvoiceNumber|IsBlank}}
+    {{^InvoiceNumber|IsBlank}}
+      Invoice Number Not Blank, {{InvoiceNumber}}
+    {{/InvoiceNumber|IsBlank}}
   {{/Invoice}}
 data: |
   {
@@ -61,25 +80,25 @@ expectedRendered: |
   Invoice Number Not Blank, INV00000033
 
 ---
-name: IsEmpty Usage
+name: IsEmpty
 description: |
-  Demonstrate how to use IsEmpty decorator
+  Evaluate if the left side input list is empty.
 template: |
   {{^Invoice.InvoiceItems|IsEmpty}}
-  {{#Invoice.InvoiceItems|First(2)}}
-    {{ChargeName}} - {{ChargeAmount}}
-  {{/Invoice.InvoiceItems|First(2)}}
+    {{#Invoice.InvoiceItems|First(2)}}
+      {{ChargeName}} - {{ChargeAmount}}
+    {{/Invoice.InvoiceItems|First(2)}}
   {{/Invoice.InvoiceItems|IsEmpty}}
 dataFile: data-driven/nested-table/for-table.json
 expectedRendered: |
   Usage Charge - 5
   Usage Charge - 3
 
-
 ---
-name: Max Usage
+name: Max
 description: |
-  Demonstrate how to use Max decorator
+  Return the max value of the specified property of the left side input list.
+  `Max` takes only one argument which is the property name of the list item object.
 template: |
   Max ChargeAmount: {{Invoice.InvoiceItems|Max(ChargeAmount)}}
 dataFile: data-driven/nested-table/nested-table.json
@@ -87,19 +106,33 @@ expectedRendered: |
   Max ChargeAmount: 32
 
 ---
-name: GroupBy with nullable property
+name: Min
 description: |
-  Demonstrate how GroupBy handle nullable property.
+  Return the min value of the specified property of the left side input list.
+  `Min` takes only one argument which is the property name of the list item object.
+template: |
+  Min ChargeAmount: {{Invoice.InvoiceItems|Min(ChargeAmount)}}
+dataFile: data-driven/nested-table/nested-table.json
+expectedRendered: |
+  Min ChargeAmount: -1.6
+
+---
+name: GroupBy
+description: |
+  `GroupBy` function groups the input list by the specified properties, at max 3 properties are supported.
   If the property is valid but null, we will replace the null with "" string.
+  `list|GroupBy(propName)` will return a list of objects in format of `{propName: value, _Group: [list of items]}`, 
+  where `_Group` is the list of items that have the same value of the specified property.
+  `list|GroupBy(prop1,prop2)` will return a list of objects in format of `{prop1: value1, _Group: [ { prop2: value2, _Group: [list of items] } ]}`
 template: |
   {{#Invoice}}
-  {{#InvoiceItems|GroupBy(AppliedToInvoiceItemId)}}
-  AppliedToInvoiceItemId: {{AppliedToInvoiceItemId}}
-  Items:
-  {{#_Group}}
-    {{ChargeName}} - {{ChargeAmount}}
-  {{/_Group}}
-  {{/InvoiceItems|GroupBy(AppliedToInvoiceItemId)}}
+    {{#InvoiceItems|GroupBy(AppliedToInvoiceItemId)}}
+      AppliedToInvoiceItemId: {{AppliedToInvoiceItemId}}
+      Items:
+      {{#_Group}}
+        {{ChargeName}} - {{ChargeAmount}}
+      {{/_Group}}
+    {{/InvoiceItems|GroupBy(AppliedToInvoiceItemId)}}
   {{/Invoice}}
 data: |
   {
@@ -134,7 +167,6 @@ expectedRendered: |
   Items:
   C-00002 - -5
   C-00003 - -1
-
 
 ---
 name: GroupBy variable
@@ -188,20 +220,20 @@ expectedRendered: |
 ---
 name: SortBy
 description: |
-  Demonstrate how to use SortBy.
-  SortBy takes pairs of arguments, first argument of a pair is either a merge field or a variable.
+  `SortBy` takes pairs of arguments, first argument of a pair is either a merge field or a variable.
   The second one is ASC/DESC.
+  Up to 3 pairs are supported.
 template: |
   {{#Invoice}}
-  {{#InvoiceItems}}
-    {{Cmd_Assign(VarId,Id)}}
-  {{/InvoiceItems}}
-  {{#InvoiceItems|SortBy(ChargeName,ASC)}}
-  {{ChargeAmount}}
-  {{/InvoiceItems|SortBy(ChargeName,ASC)}}
-  {{#InvoiceItems|SortBy(VarId,DESC)}}
-  {{ChargeAmount}}
-  {{/InvoiceItems|SortBy(VarId,DESC)}}
+    {{#InvoiceItems}}
+      {{Cmd_Assign(VarId,Id)}}
+    {{/InvoiceItems}}
+    {{#InvoiceItems|SortBy(ChargeName,ASC)}}
+      {{ChargeAmount}}
+    {{/InvoiceItems|SortBy(ChargeName,ASC)}}
+    {{#InvoiceItems|SortBy(VarId,DESC)}}
+      {{ChargeAmount}}
+    {{/InvoiceItems|SortBy(VarId,DESC)}}
   {{/Invoice}}
 
 data: |
@@ -240,10 +272,10 @@ description: |
   Demonstrate how to chain two decorators, and also to be aware of the FlatMap will change the inputField
 template: |
   {{#Invoice}}
-  {{#InvoiceItems|FlatMap(TaxationItems)|GroupBy(Name,TaxRateType)}}
-  TaxName: {{Name}}
-  RateType: {{#_Group|SortBy(TaxRateType,ASC)}}{{TaxRateType}} {{/_Group|SortBy(TaxRateType,ASC)}}
-  {{/InvoiceItems|FlatMap(TaxationItems)|GroupBy(Name,TaxRateType)}}
+    {{#InvoiceItems|FlatMap(TaxationItems)|GroupBy(Name,TaxRateType)}}
+      TaxName: {{Name}}
+      RateType: {{#_Group|SortBy(TaxRateType,ASC)}}{{TaxRateType}} {{/_Group|SortBy(TaxRateType,ASC)}}
+    {{/InvoiceItems|FlatMap(TaxationItems)|GroupBy(Name,TaxRateType)}}
   {{/Invoice}}
 
 data: |
@@ -279,10 +311,19 @@ expectedRendered: |
   RateType: type1
 
 ---
-name: FilterByValue Usage
+name: FilterByValue
 description: |
-  Demonstrate how to use FilterByValue
-  It can take a merge field or a variable as first argument and if the value contains whitespace, it needs to be url-encoded.
+  `FilterByValue` filters the left side input list with filter condition specified by its arguments.
+  The first argument is the field to be filtered, the second argument is the operator, the third argument is the value to be compared.
+  The operator can be one of the following:
+    - EQ: equal
+    - NE: not equal
+    - GT: greater than
+    - GE: greater than or equal
+    - LT: less than
+    - LE: less than or equal
+    - IS_NULL: is null
+    - NOT_NULL: is not null
 template: |
   Items with possitive amount: {{Invoice.InvoiceItems|FilterByValue(ChargeAmount,GT,0)|Size}}
   Items in 2020-12: {{Invoice.InvoiceItems|FilterByValue(ServiceStartDate|Substr(0,7),EQ,"2020-12")|Size}}
@@ -295,8 +336,7 @@ template: |
   {{#Invoice.InvoiceItems}}
     {{Cmd_Assign(VarAmount,ChargeAmount)}}
   {{/Invoice.InvoiceItems}}
-  Total of possitive items by variable: {{Invoice.InvoiceItems|FilterByValue(VarAmount,GT,0)|Sum(VarAmount)}}
-
+  Total of positive items by variable: {{Invoice.InvoiceItems|FilterByValue(VarAmount,GT,0)|Sum(VarAmount)}}
 dataFile: data-driven/nested-table/nested-table.json
 expectedRendered: |
   Items with possitive amount: 7
@@ -307,36 +347,25 @@ expectedRendered: |
   Items with not null description: 2
   Items with not-blank description: 20
   Total items by description: 21
-  Total of possitive items by variable: 211.0
-
----
-name: Fn_Add Usage
-description: |
-  Demonstrate how to use Fn_Add
-template: |
-  {{#Invoice}}
-  {{#InvoiceItems|First(2)}}
-  {{Fn_Add(ChargeAmount,TaxAmount)}}
-  {{/InvoiceItems|First(2)}}
-  {{/Invoice}}
-
-dataFile: data-driven/nested-table/multi-groups.json
-expectedRendered: |
-  28.0
-  30.0
+  Total of positive items by variable: 211.0
 
 ---
 name: Fn_Calc Usage - Numeric Fields
 description: |
   Demonstrate how to use Fn_Calc
+  Operators supported for numeric fields are:
+    - Add
+    - Subtract
+    - Multiply
+    - Divide
 template: |
   {{#Invoice}}
-  {{#InvoiceItems|First(1)}}
-  Total: {{Fn_Calc(ChargeAmount,Add,TaxAmount)}}
-  WithoutTax: {{Fn_Calc(ChargeAmount,Subtract,TaxAmount)}}
-  Price: {{Fn_Calc(UnitPrice,Multiply,Quantity)}}
-  PerUnitAmount: {{Fn_Calc(ChargeAmount,Divide,Quantity)}}
-  {{/InvoiceItems|First(1)}}
+    {{#InvoiceItems|First(1)}}
+      Total: {{Fn_Calc(ChargeAmount,Add,TaxAmount)}}
+      WithoutTax: {{Fn_Calc(ChargeAmount,Subtract,TaxAmount)}}
+      Price: {{Fn_Calc(UnitPrice,Multiply,Quantity)}}
+      PerUnitAmount: {{Fn_Calc(ChargeAmount,Divide,Quantity)}}
+    {{/InvoiceItems|First(1)}}
   {{/Invoice}}
 
 dataFile: data-driven/nested-table/multi-groups.json
@@ -350,6 +379,9 @@ expectedRendered: |
 name: Fn_Calc Usage - Boolean Fields
 description: |
   Demonstrate how to use Fn_Calc for boolean fields
+  Operators supported for boolean fields are:
+    - And
+    - Or
 template: |
   {{#Invoice}}
     {{#Fn_Calc(Status|EqualToVal(Posted),And,Account.AutoPay)}}
@@ -373,12 +405,22 @@ expectedRendered: |
 ---
 name: Round Usage
 description: |
-  Demonstrate how to use Round
+  `Round` rounds the input number to the specified number of decimal places.
+  The first argument is the number of decimal places, the second argument is the rounding mode.
+  The rounding mode can be one of the following:
+      - UP: round up
+      - DOWN: round down
+      - CEILING: round towards positive infinity
+      - FLOOR: round towards negative infinity
+      - HALF_UP: round towards nearest neighbor, if equidistant, round up
+      - HALF_DOWN: round towards nearest neighbor, if equidistant, round down
+      - HALF_EVEN: round towards nearest neighbor, if equidistant, round towards even neighbor
+      - UNNECESSARY: round towards nearest neighbor, if equidistant, throw ArithmeticException
 template: |
   {{#Invoice}}
-  {{Amount|Round(3)}}
-  {{Balance|Round(3,HALF_DOWN)}}
-  {{Amount|Round(2,UP)|Localise(en_US)}}
+    {{Amount|Round(3)}}
+    {{Balance|Round(3,HALF_DOWN)}}
+    {{Amount|Round(2,UP)|Localise(en_US)}}
   {{/Invoice}}
 data: |
   {
@@ -396,7 +438,7 @@ expectedRendered: |
 ---
 name: Map Usage
 description: |
-  Demonstrate how to use Map
+  `Map` takes a list of objects and returns a list of values of the specified field.
 template: |
   {{#Invoice}}
   {{#InvoiceItems|First(2)|Map(RatePlanCharge)}}
@@ -412,7 +454,7 @@ expectedRendered: |
 ---
 name: Symbol Usage
 description: |
-  Demonstrate how to use Symbol
+  `Symbol` returns the currency symbol for the specified currency.
 template: |
   No Rounding: {{Invoice.Account.Currency|Symbol}}{{Invoice.Amount|Localise(en_US)}}
   With Rounding: {{Invoice.Account.Currency|Symbol}}{{Invoice.Amount|Round(4)|Localise(en_US)}}
@@ -438,7 +480,8 @@ expectedRendered: |
 ---
 name: Wp_Eval Usage
 description: |
-  Demonstrate how to use Wp_Eval to evaluate an expression.
+  `Wp_Eval` is used to evaluate an expression.
+  Apache Commons [JEXL](https://commons.apache.org/proper/commons-jexl/reference/syntax.html) is used to evaluate the expression.
 template: |
   {{#Invoice}}
     {{! because it takes no argument, repetitive eval fields ends up with same keys }}
@@ -611,7 +654,6 @@ expectedRendered: |
 name: Default
 description: |
   Default provides default value in case the input is null or blank.
-
 template: |
   {{#Wp_Eval}}
     {{Invoice.Balance|Default(0)}} > 100 ? {{Invoice.Balance|Default(0)}} + 200 : {{Invoice.Balance|Default(0)}} + 100
@@ -661,13 +703,12 @@ expectedRendered: |
 ---
 name: DateAdd
 description: |
-  DateAdd gets a relative date of the input date.
+  `DateAdd` gets a relative date of the input date.
 template: |
   {{Invoice.InvoiceDate|DateAdd(-5,D)}}
   {{Invoice.InvoiceDate|DateAdd(1,M)}}
   {{Invoice.InvoiceDate|DateAdd(-1,Y)}}
   {{Invoice.InvoiceDate|DateAdd(-1,Y)|DateAdd(-1,M)|DateAdd(-1,D)}}
-
 data: |
   {
       "Invoice": {
@@ -803,3 +844,43 @@ expectedRendered: |
   Service Start Date - 2020-09-01
   Service Start Date - 2020-09-01
   Service Start Date - 2020-09-01
+
+---
+name: Uniq
+description: |
+  `Uniq` gets a unique list of items from a list.
+template: |
+  {{#Invoice.InvoiceItems|Map(RatePlanCharge)|Uniq}}
+    ChargeName - {{ChargeName}}
+  {{/Invoice.InvoiceItems|Map(RatePlanCharge)|Uniq}}
+data: |
+  {
+    "Invoice": {
+      "InvoiceItems": [
+        {
+            "RatePlanCharge": {
+                "ChargeName": "Charge 1"
+            }
+        },
+        {
+            "RatePlanCharge": {
+                "ChargeName": "Charge 2"
+            }
+        },
+        {
+            "RatePlanCharge": {
+                "ChargeName": "Charge 1"
+            }
+        },
+        {
+            "RatePlanCharge": {
+                "ChargeName": "Charge 3"
+            }
+        }
+      ]
+    }
+  }
+expectedRendered: |
+  ChargeName - Charge 1
+  ChargeName - Charge 2
+  ChargeName - Charge 3
