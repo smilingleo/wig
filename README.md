@@ -87,4 +87,4 @@ Functions are named with the prefix `Fn_`.
 ## Command
 Different from decorators and functions, commands have no output, they are used to declare variables or construct new objects.
 
-See [test cases](./src/test/resources/data-driven/decorator/test-cases.yml) for more examples.
+See [test cases](./src/test/resources/data-driven/decorators/test-cases.yml) for more examples.
