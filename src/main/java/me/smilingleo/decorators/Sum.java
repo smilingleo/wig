@@ -10,6 +10,7 @@ import me.smilingleo.WithFieldArg;
 import me.smilingleo.exceptions.ErrorCode;
 import me.smilingleo.exceptions.ValidationException;
 import me.smilingleo.utils.FieldUtils;
+import me.smilingleo.utils.MapUtils;
 import me.smilingleo.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public final class Sum implements Decorator, WithFieldArg, ReturningScalar {
 
         return list.stream()
                 .reduce(Double.valueOf(0), (acc, map) -> {
-                    Object value = map.get(field.getInputFieldName());
+                    Object value = MapUtils.getByDottedPath(map, field.getInputFieldName());
                     if (value == null) {
                         return acc;
                     }
